@@ -29,3 +29,9 @@ jobs:
 
     - name: Assemble Debug APK
       run: ./gradlew assembleDebug
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-apk
+        path: app/build/outputs/apk/debug/app-debug.apk
