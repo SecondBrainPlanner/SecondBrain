@@ -15,5 +15,5 @@ assignees: ''
 
 **Checkliste**
 Bitte bestätige, dass du die folgenden Punkte überprüft hast, bevor du das Issue einreichst:
-- [ ] Ich habe überprüft, dass diese Funktion nicht bereits vorgeschlagen wurde.0
-- [ ] Ich habe mögliche Implementierungsdetails beschrieben.
+- [ ] Ich habe überprüft, dass diese Funktion nicht bereits vorgeschlagen wurde
+- [ ] Ich habe mögliche Implementierungsdetails beschrieben
