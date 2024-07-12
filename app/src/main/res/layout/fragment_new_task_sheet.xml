@@ -55,6 +55,7 @@
     </com.google.android.material.textfield.TextInputLayout>
     <!-- end description -->
 
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/newTaskAddButton"
         android:layout_width="match_parent"
