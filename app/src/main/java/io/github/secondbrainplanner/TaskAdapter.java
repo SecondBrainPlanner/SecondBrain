@@ -8,20 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    private List<Task> taskList;
-
-    public TaskAdapter(List<Task> taskList) {
-        this.taskList = taskList;
-    }
+    private List<Task> taskList = new ArrayList<>();
 
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_new_task_sheet, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false);
         return new TaskViewHolder(view);
     }
 
@@ -37,14 +34,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return taskList.size();
     }
 
+    public void setTasks(List<Task> tasks) {
+        this.taskList = tasks;
+        notifyDataSetChanged();
+    }
+
     static class TaskViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
         TextView descriptionTextView;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameTextView = itemView.findViewById(R.id.newTaskName);
-            descriptionTextView = itemView.findViewById(R.id.newTaskDescription);
+            nameTextView = itemView.findViewById(R.id.textViewTaskName);
+            descriptionTextView = itemView.findViewById(R.id.textViewTaskDescription);
         }
     }
 }

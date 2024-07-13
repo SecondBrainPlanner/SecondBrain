@@ -9,7 +9,7 @@ class TaskViewModel : ViewModel() {
     val tasks: LiveData<List<Task>> = _tasks
 
     fun addTask(task: Task) {
-        val currentList = _tasks.value ?: mutableListOf()
+        val currentList = _tasks.value?.toMutableList() ?: mutableListOf()
         currentList.add(task)
         _tasks.value = currentList
     }
