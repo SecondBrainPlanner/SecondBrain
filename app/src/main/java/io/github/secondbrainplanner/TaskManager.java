@@ -70,7 +70,7 @@ public class TaskManager {
                 int completed_at = cursor.getInt(cursor.getColumnIndexOrThrow("completed_at"));
                 int updated_at = cursor.getInt(cursor.getColumnIndexOrThrow("updated_at"));
 
-                Task task = new Task(id, title, description, created_at, due_date, completed, completed_at, updated_at);
+                Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
                 taskList.add(task);
             } while (cursor.moveToNext());
         }
