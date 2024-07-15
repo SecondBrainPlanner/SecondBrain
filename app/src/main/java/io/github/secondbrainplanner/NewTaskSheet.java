@@ -1,13 +1,17 @@
 package io.github.secondbrainplanner;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.util.Calendar;
 
 import io.github.secondbrainplanner.databinding.FragmentNewTaskSheetBinding;
 
@@ -21,12 +25,32 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
         MainActivity activity = (MainActivity) requireActivity();
         taskViewModel = new ViewModelProvider(activity).get(TaskViewModel.class);
         binding.newTaskAddButton.setOnClickListener(v -> saveAction());
+        binding.newTaskDate.setOnClickListener(v -> showDatePicker());
+        binding.newTaskDate.setFocusable(false);
+        binding.newTaskDate.setClickable(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentNewTaskSheetBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    private void showDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
+                String selectedDate = selectedDay + "." + (selectedMonth + 1) + "." + selectedYear;
+                binding.newTaskDate.setText(selectedDate);
+            }
+        },
+                year, month, day);
+        datePickerDialog.show();
     }
 
     private void saveAction() {
