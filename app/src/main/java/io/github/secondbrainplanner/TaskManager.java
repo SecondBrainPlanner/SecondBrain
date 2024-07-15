@@ -2,7 +2,11 @@ package io.github.secondbrainplanner;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskManager {
 
@@ -49,5 +53,30 @@ public class TaskManager {
         db.delete("tasks", select, selectArgs);
         db.close();
     }
+
+    public List<Task> getAllTasks() {
+        List<Task> taskList = new ArrayList<>();
+        SQLiteDatabase db = dbManager.getReadableDatabase();
+        Cursor cursor = db.query("tasks", null, null, null, null, null, null);
+        if(cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+                int created_at = cursor.getInt(cursor.getColumnIndexOrThrow("created_at"));
+                int due_date = cursor.getInt(cursor.getColumnIndexOrThrow("due_date"));
+                int completed = cursor.getInt(cursor.getColumnIndexOrThrow("completed"));
+                int completed_at = cursor.getInt(cursor.getColumnIndexOrThrow("completed_at"));
+                int updated_at = cursor.getInt(cursor.getColumnIndexOrThrow("updated_at"));
+
+                Task task = new Task(id, title, description, created_at, due_date, completed, completed_at, updated_at);
+                taskList.add(task);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return taskList;
+    }
+
 
 }
