@@ -16,7 +16,7 @@ public class TaskManager {
         dbManager = new DatabaseManager(context);
     }
 
-    public void insertTask(String title, String description, int created_at, int due_date, int completed, int completed_at, int updated_at) {
+    public long insertTask(String title, String description, int created_at, int due_date, int completed, int completed_at, int updated_at) {
         SQLiteDatabase db = dbManager.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
@@ -26,8 +26,9 @@ public class TaskManager {
         contentValues.put("completed", completed);
         contentValues.put("completed_at", completed_at);
         contentValues.put("updated_at", updated_at);
-        db.insert("tasks", null, contentValues);
+        long id = db.insert("tasks", null, contentValues);
         db.close();
+        return id;
     }
 
     public void updateTask(int id, String title, String description, int created_at, int due_date, int completed, int completed_at, int updated_at) {
