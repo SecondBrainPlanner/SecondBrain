@@ -46,14 +46,14 @@ public class Task {
 
     public void setDescription(String description) { this.description = description; }
 
-    public void setCreated_at(int created_at) { this.created_at = created_at; }
+    public void setCreated_at(long created_at) { this.created_at = created_at; }
 
-    public void setDue_date(int due_date) { this.due_date = due_date; }
+    public void setDue_date(long due_date) { this.due_date = due_date; }
 
     public void setCompleted(int completed) { this.completed = completed; }
 
-    public void setCompleted_at(int completed_at) { this.completed_at = completed_at; }
+    public void setCompleted_at(long completed_at) { this.completed_at = completed_at; }
 
-    public void setUpdated_at(int updated_at) { this.updated_at = updated_at; }
+    public void setUpdated_at(long updated_at) { this.updated_at = updated_at; }
 
 }
