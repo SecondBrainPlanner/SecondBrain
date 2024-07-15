@@ -71,6 +71,7 @@ public class TaskManager {
                 long updated_at = cursor.getLong(cursor.getColumnIndexOrThrow("updated_at"));
 
                 Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
+                task.setId(id);
                 taskList.add(task);
             } while (cursor.moveToNext());
         }
