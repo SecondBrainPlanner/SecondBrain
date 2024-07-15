@@ -14,24 +14,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
+public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    private List<Task> taskList;
+    private List<Object> itemList;
     private SimpleDateFormat headerFormat = new SimpleDateFormat("dd MMMM • EEEE", Locale.getDefault());
 
     public TaskAdapter() {
-        this.taskList = new ArrayList<>();
-    }
-
-    public TaskAdapter(List<Task> taskList) {
-        this.taskList = taskList;
+        this.itemList = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_task, parent, false);
-        return new TaskViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -41,7 +37,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.descriptionTextView.setText(task.getDescription());
 
         Date taskDate = new Date(task.getDue_date());
-        
+
 
         if (position == 0 || !isSameDay(new Date(taskList.get(position - 1).getDue_date()), taskDate)) {
             holder.dateTextView.setVisibility(View.VISIBLE);
