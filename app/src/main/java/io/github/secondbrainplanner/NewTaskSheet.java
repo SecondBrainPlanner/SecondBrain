@@ -30,10 +30,16 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
     }
 
     private void saveAction() {
-        String name = binding.newTaskName.getText().toString();
+        String title = binding.newTaskName.getText().toString();
         String description = binding.newTaskDescription.getText().toString();
-        if (!name.isEmpty() && !description.isEmpty()) {
-            taskViewModel.addTask(new Task(name, description));
+        if (!title.isEmpty() && !description.isEmpty()) {
+            long created_at = System.currentTimeMillis();
+            long due_date = System.currentTimeMillis(); //Muss noch geändert werden
+            int completed = 0;
+            long completed_at = 0;
+            long updated_at = created_at;
+            Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
+            taskViewModel.addTask(task);
             binding.newTaskName.setText("");
             binding.newTaskDescription.setText("");
             dismiss();
