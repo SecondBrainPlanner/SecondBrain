@@ -34,10 +34,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task task = taskList.get(position);
         holder.nameTextView.setText(task.getTitle());
         holder.descriptionTextView.setText(task.getDescription());
+
+        Date taskDate = new Date(task.getDue_date());
         
-        if (position == 0 || !isSameDay(taskList.get(position - 1).getDate(), task.getDate())) {
+        if (position == 0 || !isSameDay(new Date(taskList.get(position - 1).getDue_date()), taskDate)) {
             holder.dateTextView.setVisibility(View.VISIBLE);
-            holder.dateTextView.setText(headerFormat.format(task.getDate()));
+            holder.dateTextView.setText(headerFormat.format(taskDate));
         } else {
             holder.dateTextView.setVisibility(View.GONE);
         }
