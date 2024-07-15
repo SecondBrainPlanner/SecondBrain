@@ -16,7 +16,7 @@ public class TaskManager {
         dbManager = new DatabaseManager(context);
     }
 
-    public long insertTask(String title, String description, int created_at, int due_date, int completed, int completed_at, int updated_at) {
+    public long insertTask(String title, String description, long created_at, long due_date, int completed, long completed_at, long updated_at) {
         SQLiteDatabase db = dbManager.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
@@ -31,7 +31,7 @@ public class TaskManager {
         return id;
     }
 
-    public void updateTask(int id, String title, String description, int created_at, int due_date, int completed, int completed_at, int updated_at) {
+    public void updateTask(int id, String title, String description, long created_at, long due_date, int completed, long completed_at, long updated_at) {
         SQLiteDatabase db = dbManager.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("title", title);
@@ -64,11 +64,11 @@ public class TaskManager {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
                 String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                 String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
-                int created_at = cursor.getInt(cursor.getColumnIndexOrThrow("created_at"));
-                int due_date = cursor.getInt(cursor.getColumnIndexOrThrow("due_date"));
+                long created_at = cursor.getLong(cursor.getColumnIndexOrThrow("created_at"));
+                long due_date = cursor.getLong(cursor.getColumnIndexOrThrow("due_date"));
                 int completed = cursor.getInt(cursor.getColumnIndexOrThrow("completed"));
-                int completed_at = cursor.getInt(cursor.getColumnIndexOrThrow("completed_at"));
-                int updated_at = cursor.getInt(cursor.getColumnIndexOrThrow("updated_at"));
+                long completed_at = cursor.getLong(cursor.getColumnIndexOrThrow("completed_at"));
+                long updated_at = cursor.getLong(cursor.getColumnIndexOrThrow("updated_at"));
 
                 Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
                 taskList.add(task);

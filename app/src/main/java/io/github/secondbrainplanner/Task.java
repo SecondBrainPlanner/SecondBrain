@@ -4,13 +4,13 @@ public class Task {
     private int id;
     private String title;
     private String description;
-    private int created_at;
-    private int due_date;
+    private long created_at;
+    private long due_date;
     private int completed;
-    private int completed_at;
-    private int updated_at;
+    private long completed_at;
+    private long updated_at;
 
-    public Task(String title, String description, int created_at, int due_date, int completed, int completed_at, int updated_at) {
+    public Task(String title, String description, long created_at, long due_date, int completed, long completed_at, long updated_at) {
         this.title = title;
         this.description = description;
         this.created_at = created_at;
@@ -30,15 +30,15 @@ public class Task {
         return description;
     }
 
-    public int getCreated_at() { return created_at; }
+    public long getCreated_at() { return created_at; }
 
-    public int getDue_date() { return due_date; }
+    public long getDue_date() { return due_date; }
 
     public int getCompleted() { return completed; }
 
-    public int getCompleted_at() { return completed_at; }
+    public long getCompleted_at() { return completed_at; }
 
-    public int getUpdated_at() { return updated_at; }
+    public long getUpdated_at() { return updated_at; }
 
     public void setId(int id) { this.id = id; }
 
