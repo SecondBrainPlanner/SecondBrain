@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +18,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     private List<Task> taskList;
     private SimpleDateFormat headerFormat = new SimpleDateFormat("dd MMMM • EEEE", Locale.getDefault());
+
+    public TaskAdapter() {
+        this.taskList = new ArrayList<>();
+    }
 
     public TaskAdapter(List<Task> taskList) {
         this.taskList = taskList;
@@ -37,6 +42,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         Date taskDate = new Date(task.getDue_date());
         
+
         if (position == 0 || !isSameDay(new Date(taskList.get(position - 1).getDue_date()), taskDate)) {
             holder.dateTextView.setVisibility(View.VISIBLE);
             holder.dateTextView.setText(headerFormat.format(taskDate));
@@ -73,3 +79,4 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
     }
 }
+
