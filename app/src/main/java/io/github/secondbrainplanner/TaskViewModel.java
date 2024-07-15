@@ -12,11 +12,12 @@ import java.util.List;
 public class TaskViewModel extends ViewModel {
     private final MutableLiveData<List<Task>> _tasks = new MutableLiveData<>(new ArrayList<>());
     public final LiveData<List<Task>> tasks = _tasks;
-    private final TaskManager taskManager;
+    private TaskManager taskManager;
 
-    public TaskViewModel(Application application) {
-        super();
-        taskManager = new TaskManager(application.getApplicationContext());
+    public TaskViewModel() {}
+
+    public void setTaskManager(TaskManager taskManager) {
+        this.taskManager = taskManager;
         loadTasksFromDatabase();
     }
 

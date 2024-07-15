@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(taskAdapter);
 
-        taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+        TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
+        taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
 
         taskViewModel.tasks.observe(this, new Observer<List<Task>>() {
             @Override
