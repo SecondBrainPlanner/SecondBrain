@@ -11,7 +11,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import io.github.secondbrainplanner.databinding.FragmentNewTaskSheetBinding;
 
@@ -56,9 +60,10 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
     private void saveAction() {
         String title = binding.newTaskName.getText().toString();
         String description = binding.newTaskDescription.getText().toString();
-        if (!title.isEmpty() && !description.isEmpty()) {
+        String due_date_str = binding.newTaskDate.getText().toString();
+        if (!title.isEmpty() && !description.isEmpty() && !due_date_str.isEmpty()) {
             long created_at = System.currentTimeMillis();
-            long due_date = System.currentTimeMillis(); //Muss noch geändert werden
+            long due_date = parseDate(due_date_str);
             int completed = 0;
             long completed_at = 0;
             long updated_at = created_at;
@@ -66,7 +71,19 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
             taskViewModel.addTask(task);
             binding.newTaskName.setText("");
             binding.newTaskDescription.setText("");
+            binding.newTaskDate.setText("");
             dismiss();
+        }
+    }
+
+    private long parseDate(String dateStr) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        try {
+            Date date = sdf.parse(dateStr);
+            return date != null ? date.getTime() : System.currentTimeMillis();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return System.currentTimeMillis();
         }
     }
 }
