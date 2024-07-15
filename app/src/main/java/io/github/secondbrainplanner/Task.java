@@ -10,7 +10,7 @@ public class Task {
     private int completed_at;
     private int updated_at;
 
-    public Task(int id, String title, String description, int created_at, int due_date, int completed, int completed_at, int updated_at) {
+    public Task(String title, String description, int created_at, int due_date, int completed, int completed_at, int updated_at) {
         this.title = title;
         this.description = description;
         this.created_at = created_at;
@@ -39,5 +39,21 @@ public class Task {
     public int getCompleted_at() { return completed_at; }
 
     public int getUpdated_at() { return updated_at; }
+
+    public void setId(int id) { this.id = id; }
+
+    public void setTitle(String title) { this.title = title; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public void setCreated_at(int created_at) { this.created_at = created_at; }
+
+    public void setDue_date(int due_date) { this.due_date = due_date; }
+
+    public void setCompleted(int completed) { this.completed = completed; }
+
+    public void setCompleted_at(int completed_at) { this.completed_at = completed_at; }
+
+    public void setUpdated_at(int updated_at) { this.updated_at = updated_at; }
 
 }
