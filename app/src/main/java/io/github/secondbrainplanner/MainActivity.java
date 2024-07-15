@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
 
-        taskViewModel.getTasks().observe(this, new Observer<List<Task>>() {
+        taskViewModel.tasks.observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 taskAdapter.setTasks(tasks);
