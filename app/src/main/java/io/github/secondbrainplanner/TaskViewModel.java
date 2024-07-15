@@ -1,5 +1,7 @@
 package io.github.secondbrainplanner;
 
+import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,11 +12,27 @@ import java.util.List;
 public class TaskViewModel extends ViewModel {
     private final MutableLiveData<List<Task>> _tasks = new MutableLiveData<>(new ArrayList<>());
     public final LiveData<List<Task>> tasks = _tasks;
+    private final TaskManager taskManager;
+
+    public TaskViewModel(Application application) {
+        super();
+        taskManager = new TaskManager(application.getApplicationContext());
+        loadTasksFromDatabase();
+    }
+
+    private void loadTasksFromDatabase() {
+        List<Task> taskList = taskManager.getAllTasks();
+        _tasks.setValue(taskList);
+    }
 
     public void addTask(Task task) {
-        List<Task> currentList = new ArrayList<>(_tasks.getValue());
-        currentList.add(task);
-        _tasks.setValue(currentList);
+        taskManager.insertTask(
+                task.getTitle(), task.getDescription(),
+                task.getCreated_at(), task.getDue_date(),
+                task.getCompleted(), task.getCompleted_at(),
+                task.getUpdated_at()
+        );
+        loadTasksFromDatabase();
     }
 }
 
