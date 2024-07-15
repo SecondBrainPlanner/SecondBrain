@@ -31,43 +31,44 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        Task task = taskList.get(position);
-        holder.nameTextView.setText(task.getTitle());
-        holder.descriptionTextView.setText(task.getDescription());
-
-        Date taskDate = new Date(task.getDue_date());
-
-
-        if (position == 0 || !isSameDay(new Date(taskList.get(position - 1).getDue_date()), taskDate)) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (isDate(itemList.get(position))) {
+            long dateInMillis = (Long) itemList.get(position);
+            Date date = new Date(dateInMillis);
+            holder.dateTextView.setText(headerFormat.format(date));
             holder.dateTextView.setVisibility(View.VISIBLE);
-            holder.dateTextView.setText(headerFormat.format(taskDate));
+            holder.nameTextView.setVisibility(View.GONE);
+            holder.descriptionTextView.setVisibility(View.GONE);
         } else {
+            Task task = (Task) itemList.get(position);
+            holder.nameTextView.setText(task.getTitle());
+            holder.descriptionTextView.setText(task.getDescription());
             holder.dateTextView.setVisibility(View.GONE);
+            holder.nameTextView.setVisibility(View.VISIBLE);
+            holder.descriptionTextView.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public int getItemCount() {
-        return taskList.size();
+        return itemList.size();
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.taskList = tasks;
+    private boolean isDate(Object item) {
+        return item instanceof Long;
+    }
+
+    public void setItems(List<Object> items) {
+        this.itemList = items;
         notifyDataSetChanged();
     }
 
-    private boolean isSameDay(Date date1, Date date2) {
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-        return fmt.format(date1).equals(fmt.format(date2));
-    }
-
-    static class TaskViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView dateTextView;
         TextView nameTextView;
         TextView descriptionTextView;
 
-        public TaskViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             nameTextView = itemView.findViewById(R.id.textViewTaskName);
@@ -75,4 +76,3 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         }
     }
 }
-
