@@ -26,13 +26,16 @@ public class TaskViewModel extends ViewModel {
     }
 
     public void addTask(Task task) {
-        taskManager.insertTask(
+        long id = taskManager.insertTask(
                 task.getTitle(), task.getDescription(),
                 task.getCreated_at(), task.getDue_date(),
                 task.getCompleted(), task.getCompleted_at(),
                 task.getUpdated_at()
         );
-        loadTasksFromDatabase();
+        task.setId((int) id);
+        List<Task> currentList = new ArrayList<>(_tasks.getValue());
+        currentList.add(task);
+        _tasks.setValue(currentList);
     }
 }
 
