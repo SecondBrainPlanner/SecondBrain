@@ -16,7 +16,7 @@ import java.util.Locale;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
-    private List<Object> itemList;
+    private List<Object> itemList = new ArrayList<>();
     private SimpleDateFormat headerFormat = new SimpleDateFormat("dd MMMM • EEEE", Locale.getDefault());
 
     public TaskAdapter() {
