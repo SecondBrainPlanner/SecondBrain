@@ -108,7 +108,7 @@ public class TaskViewModel extends ViewModel {
         return itemList;
     }
 
-    private boolean isSameDay(long timestamp1, long timestamp2) {
+    public boolean isSameDay(long timestamp1, long timestamp2) {
         Calendar calendar1 = Calendar.getInstance();
         calendar1.setTimeInMillis(timestamp1);
 
