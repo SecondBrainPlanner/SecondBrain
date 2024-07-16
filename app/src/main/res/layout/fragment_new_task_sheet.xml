@@ -55,7 +55,7 @@
     </com.google.android.material.textfield.TextInputLayout>
     <!-- end description -->
 
-    <!-- start description -->
+    <!-- start datepicker -->
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
@@ -72,7 +72,7 @@
         </com.google.android.material.textfield.TextInputEditText>
 
     </com.google.android.material.textfield.TextInputLayout>
-    <!-- end description -->
+    <!-- end datepicker -->
 
 
     <com.google.android.material.button.MaterialButton

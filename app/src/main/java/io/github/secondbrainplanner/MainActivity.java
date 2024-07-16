@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
 
-        taskAdapter = new TaskAdapter(taskViewModel);
+        taskAdapter = new TaskAdapter(taskViewModel, getSupportFragmentManager());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(taskAdapter);
 

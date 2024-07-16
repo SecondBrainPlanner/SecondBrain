@@ -13,6 +13,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -22,6 +26,11 @@ import io.github.secondbrainplanner.databinding.FragmentEditTaskSheetBinding;
 public class EditTaskSheet extends BottomSheetDialogFragment {
     private FragmentEditTaskSheetBinding binding;
     private TaskViewModel taskViewModel;
+    private Task edittask;
+
+    public EditTaskSheet(Task edittask) {
+        this.edittask = edittask;
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -32,6 +41,9 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
         binding.editTaskDate.setOnClickListener(v -> showDatePicker());
         binding.editTaskDate.setFocusable(false);
         binding.editTaskDate.setClickable(true);
+        binding.editTaskName.setText(edittask.getTitle());
+        binding.editTaskDescription.setText(edittask.getDescription());
+        binding.editTaskDate.setText(convertToDate(edittask.getDue_date()));
     }
 
     @Override
@@ -62,13 +74,14 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
         String description = binding.editTaskDescription.getText().toString();
         String due_date_str = binding.editTaskDate.getText().toString();
         if (!title.isEmpty() && !description.isEmpty() && !due_date_str.isEmpty()) {
-            long created_at = System.currentTimeMillis();
+            long created_at = edittask.getCreated_at();
             long due_date = parseDate(due_date_str);
             int completed = 0;
             long completed_at = 0;
-            long updated_at = created_at;
+            long updated_at = System.currentTimeMillis();
             Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
-            taskViewModel.addTask(task);
+            task.setId(edittask.getId());
+            taskViewModel.editTask(task, edittask);
             binding.editTaskName.setText("");
             binding.editTaskDescription.setText("");
             binding.editTaskDate.setText("");
@@ -85,6 +98,13 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
             e.printStackTrace();
             return System.currentTimeMillis();
         }
+    }
+
+    private String convertToDate(long date) {
+        Instant instant = Instant.ofEpochMilli(date);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return dateTime.format(formatter);
     }
 }
 
