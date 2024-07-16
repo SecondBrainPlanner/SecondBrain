@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".NewTaskSheet">
+    tools:context=".EditTaskSheet">
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Neue Aufgabe"
+        android:text="Aufgabe editieren"
         android:textSize="30sp"
         android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
@@ -28,13 +28,13 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/newTaskName"
+            android:id="@+id/editTaskName"
             android:hint="name">
 
         </com.google.android.material.textfield.TextInputEditText>
 
     </com.google.android.material.textfield.TextInputLayout>
-<!-- end name -->
+    <!-- end name -->
 
     <!-- start description -->
     <com.google.android.material.textfield.TextInputLayout
@@ -47,7 +47,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/newTaskDescription"
+            android:id="@+id/editTaskDescription"
             android:hint="description">
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -66,7 +66,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/newTaskDate"
+            android:id="@+id/editTaskDate"
             android:hint="date">
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -76,7 +76,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/newTaskAddButton"
+        android:id="@+id/editTaskAddButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

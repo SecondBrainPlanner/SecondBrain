@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -24,10 +25,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private SimpleDateFormat headerFormat = new SimpleDateFormat("dd MMMM • EEEE", Locale.getDefault());
 
     private TaskViewModel taskViewModel;
+    private FragmentManager fragmentManager;
 
-    public TaskAdapter(TaskViewModel taskViewModel) {
+    public TaskAdapter(TaskViewModel taskViewModel, FragmentManager fragmentManager) {
         this.itemList = new ArrayList<>();
         this.taskViewModel = taskViewModel;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -78,6 +81,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
                     return true;
                 }
+            });
+            holder.itemView.setOnClickListener(v -> {
+                new EditTaskSheet(task).show(fragmentManager, "editTaskTag");
             });
         }
     }
