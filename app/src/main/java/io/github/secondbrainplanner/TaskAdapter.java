@@ -1,9 +1,13 @@
 package io.github.secondbrainplanner;
 
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,8 +23,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private List<Object> itemList = new ArrayList<>();
     private SimpleDateFormat headerFormat = new SimpleDateFormat("dd MMMM • EEEE", Locale.getDefault());
 
-    public TaskAdapter() {
+    private TaskViewModel taskViewModel;
+
+    public TaskAdapter(TaskViewModel taskViewModel) {
         this.itemList = new ArrayList<>();
+        this.taskViewModel = taskViewModel;
     }
 
     @NonNull
@@ -46,6 +53,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.dateTextView.setVisibility(View.GONE);
             holder.nameTextView.setVisibility(View.VISIBLE);
             holder.descriptionTextView.setVisibility(View.VISIBLE);
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Toast.makeText(v.getContext(), "Task wird in 2 Sekunden gelöscht: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+
+                    new CountDownTimer(2000, 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            long secondsRemaining = millisUntilFinished / 1000;
+                            Toast.makeText(v.getContext(), "Noch " + secondsRemaining + " Sekunden...", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            if (taskViewModel != null && task != null) {
+                                taskViewModel.deleteTask(task);
+                            } else {
+                                //Logge den Fehler im Android-Log, ansonsten stürzt die App ab.
+                                Log.e("TaskAdapter", "taskViewModel or task is null");
+                            }
+                        }
+                    }.start();
+
+                    return true;
+                }
+            });
         }
     }
 

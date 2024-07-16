@@ -29,12 +29,12 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        taskAdapter = new TaskAdapter();
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(taskAdapter);
-
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
+
+        taskAdapter = new TaskAdapter(taskViewModel);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setAdapter(taskAdapter);
 
         taskViewModel.items.observe(this, new Observer<List<Object>>() {
             @Override

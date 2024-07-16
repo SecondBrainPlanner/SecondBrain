@@ -44,6 +44,16 @@ public class TaskViewModel extends ViewModel {
         _items.setValue(generateDateList(currentTaskList));
     }
 
+    public void deleteTask(Task task) {
+        taskManager.deleteTask(task.getId());
+  
+        List<Task> currentTaskList = extractTasks(_items.getValue());
+        currentTaskList.remove(task);
+
+        updateDateRangeIfNeeded(currentTaskList);
+        _items.setValue(generateDateList(currentTaskList));
+    }
+    
     private void updateDateRangeIfNeeded(List<Task> taskList) {
         long minDate = System.currentTimeMillis();
         long maxDate = minDate + 30L * 24 * 60 * 60 * 1000; // 30 tage
