@@ -36,4 +36,38 @@ public class TaskViewModel extends ViewModel {
         task.setId((int) id);
         loadItems();
     }
+    private List<Object> generateDateList(List<Task> taskList) {
+        List<Object> itemList = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        int numberOfDaysToShow = 30;
+
+        for (int i = 0; i < numberOfDaysToShow; i++) {
+            long currentDate = calendar.getTimeInMillis();
+            itemList.add(currentDate);
+
+            for (Task task : taskList) {
+                if (isSameDay(task.getDue_date(), currentDate)) {
+                    itemList.add(task);
+                }
+            }
+
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        return itemList;
+    }
+
+    private boolean isSameDay(long timestamp1, long timestamp2) {
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTimeInMillis(timestamp1);
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setTimeInMillis(timestamp2);
+
+        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+                calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR);
+    }
 }
