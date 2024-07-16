@@ -53,7 +53,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
             boolean hasTasks = false;
             for (int i = position + 1; i < itemList.size(); i++) {
-                if (!isDate(itemList.get(i)) && taskViewModel.isSameDay(dateInMillis, ((Task) itemList.get(i)).getDue_date())) {
+                if (!isDate(itemList.get(i)) && taskViewModel.isSameDay(dateInMillis, ((Task) itemList.get(i)).getDue_date())) {    //später .get updated at nutzen?
                     hasTasks = true;
                     break;
                 }
