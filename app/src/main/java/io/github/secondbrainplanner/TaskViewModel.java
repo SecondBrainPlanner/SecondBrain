@@ -1,5 +1,6 @@
 package io.github.secondbrainplanner;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,18 +13,19 @@ public class TaskViewModel extends ViewModel {
     private final MutableLiveData<List<Object>> _items = new MutableLiveData<>(new ArrayList<>());
     public final LiveData<List<Object>> items = _items;
     private TaskManager taskManager;
+    private int numberOfDaysToShow = 30;
 
     public TaskViewModel() {}
 
     public void setTaskManager(TaskManager taskManager) {
         this.taskManager = taskManager;
-        loadItems();
+        loadTasksFromDatabase();
     }
 
-    private void loadItems() {
+    private void loadTasksFromDatabase() {
         List<Task> taskList = taskManager.getAllTasks();
-        List<Object> itemList = generateDateList(taskList);
-        _items.setValue(itemList);
+        updateDateRangeIfNeeded(taskList);
+        _items.setValue(generateDateList(taskList));
     }
 
     public void addTask(Task task) {
@@ -34,15 +36,35 @@ public class TaskViewModel extends ViewModel {
                 task.getUpdated_at()
         );
         task.setId((int) id);
-        loadItems();
+
+        List<Task> currentTaskList = extractTasks(_items.getValue());
+        currentTaskList.add(task);
+
+        updateDateRangeIfNeeded(currentTaskList);
+        _items.setValue(generateDateList(currentTaskList));
     }
+
+    private void updateDateRangeIfNeeded(List<Task> taskList) {
+        long minDate = System.currentTimeMillis();
+        long maxDate = minDate + 30L * 24 * 60 * 60 * 1000; // 30 tage
+
+        for (Task task : taskList) {
+            if (task.getDue_date() < minDate) {
+                minDate = task.getDue_date();
+            }
+            if (task.getDue_date() > maxDate) {
+                maxDate = task.getDue_date();
+            }
+        }
+
+        numberOfDaysToShow = (int) (((maxDate - minDate) / (24 * 60 * 60 * 1000)) + 2) + 20; // extra Timestamps nach klammer hinzufügen
+    }
+
     private List<Object> generateDateList(List<Task> taskList) {
         List<Object> itemList = new ArrayList<>();
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-
-        int numberOfDaysToShow = 30;
 
         for (int i = 0; i < numberOfDaysToShow; i++) {
             long currentDate = calendar.getTimeInMillis();
@@ -69,5 +91,15 @@ public class TaskViewModel extends ViewModel {
 
         return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
                 calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private List<Task> extractTasks(List<Object> items) {
+        List<Task> taskList = new ArrayList<>();
+        for (Object item : items) {
+            if (item instanceof Task) {
+                taskList.add((Task) item);
+            }
+        }
+        return taskList;
     }
 }
