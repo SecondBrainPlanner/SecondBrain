@@ -13,7 +13,9 @@
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#DC6C6767"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:background="@drawable/bottom_border"
+        android:paddingBottom="4dp"/>
 
     <TextView
         android:id="@+id/textViewTaskName"

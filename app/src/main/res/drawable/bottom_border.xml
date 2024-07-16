@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Transparenter Hintergrund -->
+    <item android:drawable="@android:color/transparent" />
+
+    <!-- Schwarzer unterer Rand -->
+    <item
+        android:top="24dp"
+        android:drawable="@android:color/black"/>
+</layer-list>
