@@ -46,7 +46,7 @@ public class TaskViewModel extends ViewModel {
 
     private void updateDateRangeIfNeeded(List<Task> taskList) {
         long minDate = System.currentTimeMillis();
-        long maxDate = minDate + (long) numberOfDaysToShow * 24 * 60 * 60 * 1000; // 30 tage
+        long maxDate = minDate + 30L * 24 * 60 * 60 * 1000; // 30 tage
 
         for (Task task : taskList) {
             if (task.getDue_date() < minDate) {
@@ -91,5 +91,15 @@ public class TaskViewModel extends ViewModel {
 
         return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
                 calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private List<Task> extractTasks(List<Object> items) {
+        List<Task> taskList = new ArrayList<>();
+        for (Object item : items) {
+            if (item instanceof Task) {
+                taskList.add((Task) item);
+            }
+        }
+        return taskList;
     }
 }
