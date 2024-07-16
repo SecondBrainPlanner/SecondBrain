@@ -36,6 +36,12 @@ public class TaskViewModel extends ViewModel {
         task.setId((int) id);
         loadItems();
     }
+
+    public void deleteTask(Task task) {
+        taskManager.deleteTask(task.getId());
+        loadItems();
+    }
+    
     private List<Object> generateDateList(List<Task> taskList) {
         List<Object> itemList = new ArrayList<>();
 
