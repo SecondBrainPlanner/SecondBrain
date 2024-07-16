@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +50,23 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.dateTextView.setVisibility(View.VISIBLE);
             holder.nameTextView.setVisibility(View.GONE);
             holder.descriptionTextView.setVisibility(View.GONE);
+
+            boolean hasTasks = false;
+            for (int i = position + 1; i < itemList.size(); i++) {
+                if (!isDate(itemList.get(i)) && taskViewModel.isSameDay(dateInMillis, ((Task) itemList.get(i)).getDue_date())) {    //später .get updated at nutzen?
+                    hasTasks = true;
+                    break;
+                }
+                if (isDate(itemList.get(i))) {
+                    break;
+                }
+            }
+
+            if (hasTasks) {
+                holder.dateTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
+            } else {
+                holder.dateTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.grey));
+            }
         } else {
             Task task = (Task) itemList.get(position);
             holder.nameTextView.setText(task.getTitle());
