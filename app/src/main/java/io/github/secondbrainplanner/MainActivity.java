@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskViewModel taskViewModel;
     private TaskAdapter taskAdapter;
     private TextView textViewMon, textViewTue, textViewWed, textViewThu, textViewFri, textViewSat, textViewSun;
+    private TextView textViewMonNum, textViewTueNum, textViewWedNum, textViewThuNum, textViewFriNum, textViewSatNum, textViewSunNum;
     private TextView monthAndYear;
 
     @Override
@@ -53,6 +54,14 @@ public class MainActivity extends AppCompatActivity {
         textViewFri = findViewById(R.id.textViewFri);
         textViewSat = findViewById(R.id.textViewSat);
         textViewSun = findViewById(R.id.textViewSun);
+
+        textViewMonNum = findViewById(R.id.textViewMonNum);
+        textViewTueNum = findViewById(R.id.textViewTueNum);
+        textViewWedNum = findViewById(R.id.textViewWedNum);
+        textViewThuNum = findViewById(R.id.textViewThuNum);
+        textViewFriNum = findViewById(R.id.textViewFriNum);
+        textViewSatNum = findViewById(R.id.textViewSatNum);
+        textViewSunNum = findViewById(R.id.textViewSunNum);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 updateMonthAndYear();
+                updateDateNumbers();
             }
         });
 
@@ -98,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        updateDateNumbers();
     }
     private void updateMonthAndYear() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
@@ -165,6 +176,33 @@ public class MainActivity extends AppCompatActivity {
         textViewFri.setBackgroundColor(Color.TRANSPARENT);
         textViewSat.setBackgroundColor(Color.TRANSPARENT);
         textViewSun.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    private void updateDateNumbers() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
+        if (layoutManager != null) {
+            int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+            Object item = taskAdapter.getItemAtPosition(firstVisiblePosition);
+            if (item instanceof Long) {
+                long dateInMillis = (Long) item;
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(dateInMillis);
+
+                textViewMonNum.setText(getDayOfMonth(calendar, Calendar.MONDAY));
+                textViewTueNum.setText(getDayOfMonth(calendar, Calendar.TUESDAY));
+                textViewWedNum.setText(getDayOfMonth(calendar, Calendar.WEDNESDAY));
+                textViewThuNum.setText(getDayOfMonth(calendar, Calendar.THURSDAY));
+                textViewFriNum.setText(getDayOfMonth(calendar, Calendar.FRIDAY));
+                textViewSatNum.setText(getDayOfMonth(calendar, Calendar.SATURDAY));
+                textViewSunNum.setText(getDayOfMonth(calendar, Calendar.SUNDAY));
+            }
+        }
+    }
+
+    private String getDayOfMonth(Calendar calendar, int dayOfWeek) {
+        Calendar cal = (Calendar) calendar.clone();
+        cal.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+        return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
