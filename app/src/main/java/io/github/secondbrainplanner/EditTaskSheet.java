@@ -67,6 +67,7 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
             }
         },
                 year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
 
