@@ -120,6 +120,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public Object getItemAtPosition(int position) {
+        if (position >= 0 && position < itemList.size()) {
+            return itemList.get(position);
+        }
+        return null;
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView dateTextView;
         TextView nameTextView;
