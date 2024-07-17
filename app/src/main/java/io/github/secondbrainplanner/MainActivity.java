@@ -19,8 +19,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import io.github.secondbrainplanner.databinding.ActivityMainBinding;
 
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private TaskViewModel taskViewModel;
     private TaskAdapter taskAdapter;
     private TextView textViewMon, textViewTue, textViewWed, textViewThu, textViewFri, textViewSat, textViewSun;
+    private TextView monthAndYear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        monthAndYear = findViewById(R.id.monthAndYear);
 
         textViewMon = findViewById(R.id.textViewMon);
         textViewTue = findViewById(R.id.textViewTue);
@@ -76,6 +81,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                updateMonthAndYear();
+            }
+        });
+
+        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
                 updateHighlightedWeekDay();
             }
         });
@@ -85,6 +98,21 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+    private void updateMonthAndYear() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
+        if (layoutManager != null) {
+            int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+            Object item = taskAdapter.getItemAtPosition(firstVisiblePosition);
+            if (item instanceof Long) {
+                long dateInMillis = (Long) item;
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(dateInMillis);
+                SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+                String monthAndYearString = monthAndYearFormat.format(calendar.getTime());
+                monthAndYear.setText(monthAndYearString);
+            }
+        }
     }
 
     private void updateHighlightedWeekDay() {
