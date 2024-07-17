@@ -38,7 +38,7 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
         MainActivity activity = (MainActivity) requireActivity();
         taskViewModel = new ViewModelProvider(activity).get(TaskViewModel.class);
         binding.editTaskAddButton.setOnClickListener(v -> saveAction());
-        binding.editTaskDate.setOnClickListener(v -> showDatePicker());
+        binding.editTaskDate.setOnClickListener(v -> showDatePicker(edittask.getDue_date()));
         binding.editTaskDate.setFocusable(false);
         binding.editTaskDate.setClickable(true);
         binding.editTaskName.setText(edittask.getTitle());
@@ -52,8 +52,9 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
         return binding.getRoot();
     }
 
-    private void showDatePicker() {
+    private void showDatePicker(long millis) {
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(millis);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -66,6 +67,7 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
             }
         },
                 year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
 
