@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -22,6 +23,12 @@ import io.github.secondbrainplanner.databinding.FragmentNewTaskSheetBinding;
 public class NewTaskSheet extends BottomSheetDialogFragment {
     private FragmentNewTaskSheetBinding binding;
     private TaskViewModel taskViewModel;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
