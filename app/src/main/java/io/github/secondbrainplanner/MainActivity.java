@@ -2,12 +2,15 @@ package io.github.secondbrainplanner;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         textViewFri = findViewById(R.id.textViewFri);
         textViewSat = findViewById(R.id.textViewSat);
         textViewSun = findViewById(R.id.textViewSun);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
@@ -132,4 +138,21 @@ public class MainActivity extends AppCompatActivity {
         textViewSat.setBackgroundColor(Color.TRANSPARENT);
         textViewSun.setBackgroundColor(Color.TRANSPARENT);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_more) {
+            // Mehr Funktionen
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
