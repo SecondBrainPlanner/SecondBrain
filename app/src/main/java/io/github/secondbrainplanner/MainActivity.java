@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     private TextView textViewMon, textViewTue, textViewWed, textViewThu, textViewFri, textViewSat, textViewSun;
     private TextView textViewMonNum, textViewTueNum, textViewWedNum, textViewThuNum, textViewFriNum, textViewSatNum, textViewSunNum;
     private TextView monthAndYear;
+    private String currentDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
 
         taskViewModel.items.observe(this, items -> taskAdapter.setItems(items));
 
-        binding.newTaskButton.setOnClickListener(view -> new NewTaskSheet().show(getSupportFragmentManager(), "newTaskTag"));
+        binding.newTaskButton.setOnClickListener(view -> new NewTaskSheet(currentDate).show(getSupportFragmentManager(), "newTaskTag"));
 
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -117,6 +118,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
                 calendar.setTimeInMillis(dateInMillis);
                 SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
                 String monthAndYearString = monthAndYearFormat.format(calendar.getTime());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+                currentDate = dateFormat.format(calendar.getTime());
                 monthAndYear.setText(monthAndYearString);
             }
         }
