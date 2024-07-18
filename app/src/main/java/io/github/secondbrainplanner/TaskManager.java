@@ -72,7 +72,36 @@ public class TaskManager {
 
                 Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
                 task.setId(id);
-                taskList.add(task);
+                if (task.getCompleted() == 0) {
+                    taskList.add(task);
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return taskList;
+    }
+
+    public List<Task> getAllCompletedTasks() {
+        List<Task> taskList = new ArrayList<>();
+        SQLiteDatabase db = dbManager.getReadableDatabase();
+        Cursor cursor = db.query("tasks", null, null, null, null, null, null);
+        if(cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+                long created_at = cursor.getLong(cursor.getColumnIndexOrThrow("created_at"));
+                long due_date = cursor.getLong(cursor.getColumnIndexOrThrow("due_date"));
+                int completed = cursor.getInt(cursor.getColumnIndexOrThrow("completed"));
+                long completed_at = cursor.getLong(cursor.getColumnIndexOrThrow("completed_at"));
+                long updated_at = cursor.getLong(cursor.getColumnIndexOrThrow("updated_at"));
+
+                Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
+                task.setId(id);
+                if (task.getCompleted() != 0) {
+                    taskList.add(task);
+                }
             } while (cursor.moveToNext());
         }
         cursor.close();
