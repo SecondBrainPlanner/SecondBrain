@@ -25,6 +25,11 @@ import io.github.secondbrainplanner.databinding.FragmentNewTaskSheetBinding;
 public class NewTaskSheet extends BottomSheetDialogFragment {
     private FragmentNewTaskSheetBinding binding;
     private TaskViewModel taskViewModel;
+    private String currentDate;
+
+    public NewTaskSheet(String currentDate) {
+        this.currentDate = currentDate;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,8 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
         binding.newTaskDate.setOnClickListener(v -> showDatePicker());
         binding.newTaskDate.setFocusable(false);
         binding.newTaskDate.setClickable(true);
+
+        binding.newTaskDate.setText(currentDate);
 
         binding.newTaskName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
