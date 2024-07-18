@@ -13,4 +13,5 @@
     <color name="grey">#8A8686</color>
     <color name="light_grey">#444444</color>
     <color name="red">#B50000</color>
+    <color name="topBarHighlightingColor">#B50000</color>
 </resources>
