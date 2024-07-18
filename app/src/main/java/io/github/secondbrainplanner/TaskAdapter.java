@@ -27,11 +27,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private TaskViewModel taskViewModel;
     private FragmentManager fragmentManager;
+    private RecyclerView recyclerView;
+    private onDateClickListener onDateClickListener;
 
-    public TaskAdapter(TaskViewModel taskViewModel, FragmentManager fragmentManager) {
+    public TaskAdapter(TaskViewModel taskViewModel, FragmentManager fragmentManager, RecyclerView recyclerView, onDateClickListener onDateClickListener) {
         this.itemList = new ArrayList<>();
         this.taskViewModel = taskViewModel;
         this.fragmentManager = fragmentManager;
+        this.recyclerView = recyclerView;
+        this.onDateClickListener = onDateClickListener;
     }
 
     @NonNull
@@ -67,6 +71,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             } else {
                 holder.dateTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.grey));
             }
+
+            holder.dateTextView.setOnClickListener(v -> onDateClickListener.onDateClick(dateInMillis));
+
         } else {
             Task task = (Task) itemList.get(position);
             holder.nameTextView.setText(task.getTitle());
@@ -138,5 +145,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             nameTextView = itemView.findViewById(R.id.textViewTaskName);
             descriptionTextView = itemView.findViewById(R.id.textViewTaskDescription);
         }
+    }
+
+    public interface onDateClickListener{
+        void onDateClick(long dateInMillis);
     }
 }

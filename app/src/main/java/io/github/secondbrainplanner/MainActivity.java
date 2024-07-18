@@ -27,7 +27,7 @@ import java.util.Locale;
 
 import io.github.secondbrainplanner.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TaskAdapter.onDateClickListener {
 
     private ActivityMainBinding binding;
     private TaskViewModel taskViewModel;
@@ -70,22 +70,13 @@ public class MainActivity extends AppCompatActivity {
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
 
-        taskAdapter = new TaskAdapter(taskViewModel, getSupportFragmentManager());
+        taskAdapter = new TaskAdapter(taskViewModel, getSupportFragmentManager(), binding.recyclerView, this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(taskAdapter);
 
         taskViewModel.items.observe(this, items -> taskAdapter.setItems(items));
 
-        taskViewModel.items.observe(this, new Observer<List<Object>>() {
-            @Override
-            public void onChanged(List<Object> items) {
-                taskAdapter.setItems(items);
-            }
-        });
-
-        binding.newTaskButton.setOnClickListener(view -> {
-            new NewTaskSheet().show(getSupportFragmentManager(), "newTaskTag");
-        });
+        binding.newTaskButton.setOnClickListener(view -> new NewTaskSheet().show(getSupportFragmentManager(), "newTaskTag"));
 
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -93,23 +84,27 @@ public class MainActivity extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 updateMonthAndYear();
                 updateDateNumbers();
-            }
-        });
-
-        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
                 updateHighlightedWeekDay();
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (view, insets) -> {
+            Insets systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemInsets.left, systemInsets.top, systemInsets.right, systemInsets.bottom);
+            return WindowInsetsCompat.CONSUMED;
         });
-        updateDateNumbers();
+
+        SimpleDateFormat monthDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+        String currentMonthAndYear = monthDateFormat.format(Calendar.getInstance().getTime());
+        monthAndYear.setText(currentMonthAndYear);
+
+        textViewMon.setBackgroundColor(Color.TRANSPARENT);
+        textViewTue.setBackgroundColor(Color.TRANSPARENT);
+        textViewWed.setBackgroundColor(Color.TRANSPARENT);
+        textViewThu.setBackgroundColor(Color.TRANSPARENT);
+        textViewFri.setBackgroundColor(Color.TRANSPARENT);
+        textViewSat.setBackgroundColor(Color.TRANSPARENT);
+        textViewSun.setBackgroundColor(Color.TRANSPARENT);
     }
     private void updateMonthAndYear() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
@@ -223,4 +218,21 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDateClick(long dateInMillis) {
+        scrollToDate(dateInMillis);
+    }
+
+    private void scrollToDate(long dateInMillis) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
+        if (layoutManager != null) {
+            for (int i = 0; i < taskAdapter.getItemCount(); i++) {
+                Object item = taskAdapter.getItemAtPosition(i);
+                if (item instanceof Long && (Long) item == dateInMillis) {
+                    layoutManager.scrollToPositionWithOffset(i, 0);
+                    break;
+                }
+            }
+        }
+    }
 }
