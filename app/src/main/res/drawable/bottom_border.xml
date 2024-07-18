@@ -5,6 +5,6 @@
 
     <!-- Schwarzer unterer Rand -->
     <item
-        android:top="24dp"
+        android:top="3.7mm"
         android:drawable="@android:color/black"/>
 </layer-list>
