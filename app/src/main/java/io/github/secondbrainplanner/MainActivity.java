@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -142,27 +143,35 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
 
     private void highlightWeekDay(int dayOfWeek) {
         resetWeekDayHighlights();
+        int topBarHighlightingColor = ContextCompat.getColor(this, R.color.topBarHighlightingColor);
         switch (dayOfWeek) {
             case Calendar.MONDAY:
-                textViewMon.setBackgroundColor(Color.RED);
+                textViewMon.setBackgroundColor(topBarHighlightingColor);
+                textViewMonNum.setBackgroundColor(topBarHighlightingColor);
                 break;
             case Calendar.TUESDAY:
-                textViewTue.setBackgroundColor(Color.RED);
+                textViewTue.setBackgroundColor(topBarHighlightingColor);
+                textViewTueNum.setBackgroundColor(topBarHighlightingColor);
                 break;
             case Calendar.WEDNESDAY:
-                textViewWed.setBackgroundColor(Color.RED);
+                textViewWed.setBackgroundColor(topBarHighlightingColor);
+                textViewWedNum.setBackgroundColor(topBarHighlightingColor);
                 break;
             case Calendar.THURSDAY:
-                textViewThu.setBackgroundColor(Color.RED);
+                textViewThu.setBackgroundColor(topBarHighlightingColor);
+                textViewThuNum.setBackgroundColor(topBarHighlightingColor);
                 break;
             case Calendar.FRIDAY:
-                textViewFri.setBackgroundColor(Color.RED);
+                textViewFri.setBackgroundColor(topBarHighlightingColor);
+                textViewFriNum.setBackgroundColor(topBarHighlightingColor);
                 break;
             case Calendar.SATURDAY:
-                textViewSat.setBackgroundColor(Color.RED);
+                textViewSat.setBackgroundColor(topBarHighlightingColor);
+                textViewSatNum.setBackgroundColor(topBarHighlightingColor);
                 break;
             case Calendar.SUNDAY:
-                textViewSun.setBackgroundColor(Color.RED);
+                textViewSun.setBackgroundColor(topBarHighlightingColor);
+                textViewSunNum.setBackgroundColor(topBarHighlightingColor);
                 break;
         }
     }
@@ -175,6 +184,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         textViewFri.setBackgroundColor(Color.TRANSPARENT);
         textViewSat.setBackgroundColor(Color.TRANSPARENT);
         textViewSun.setBackgroundColor(Color.TRANSPARENT);
+
+        textViewMonNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewTueNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewWedNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewThuNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewFriNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewSatNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewSunNum.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private void updateDateNumbers() {

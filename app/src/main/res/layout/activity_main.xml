@@ -19,179 +19,208 @@
         android:textColor="#FFFFFF"
         android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/weekDaysLayout"
+        app:layout_constraintBottom_toTopOf="@id/weekDaysGrid"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/weekDaysLayout"
+    <GridLayout
+        android:id="@+id/weekDaysGrid"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:columnCount="7"
+        android:rowCount="2"
         android:orientation="horizontal"
-        android:gravity="center"
+        android:padding="0dp"
+        android:layout_margin="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         app:layout_constraintTop_toBottomOf="@id/monthAndYear"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/textViewMon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Mon"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textViewTue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Tue"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textViewWed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Wed"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textViewThu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Thu"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textViewFri"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Fri"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textViewSat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Sat"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textViewSun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="Sun"
-            android:textSize="18sp" />
-
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/weekDayNumbers"
+    <!-- Monday -->
+    <TextView
+        android:id="@+id/textViewMon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/dark_grey"
-        app:layout_constraintTop_toBottomOf="@id/weekDaysLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:text="Mon"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_row="0"
+        android:layout_column="0" />
 
-        <TextView
-            android:id="@+id/textViewMonNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="1"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewTueNum"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewMonNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_row="1"
+        android:layout_column="0" />
 
-        <TextView
-            android:id="@+id/textViewTueNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="2"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewWedNum"
-            app:layout_constraintStart_toEndOf="@+id/textViewMonNum"
-            app:layout_constraintTop_toTopOf="parent" />
+    <!-- Tuesday -->
+    <TextView
+        android:id="@+id/textViewTue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:text="Tue"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_row="0"
+        android:layout_column="1" />
 
-        <TextView
-            android:id="@+id/textViewWedNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="3"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewThuNum"
-            app:layout_constraintStart_toEndOf="@+id/textViewTueNum"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewTueNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_row="1"
+        android:layout_column="1" />
 
-        <TextView
-            android:id="@+id/textViewThuNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="4"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewFriNum"
-            app:layout_constraintStart_toEndOf="@+id/textViewWedNum"
-            app:layout_constraintTop_toTopOf="parent" />
+    <!-- Wednesday -->
+    <TextView
+        android:id="@+id/textViewWed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:text="Wed"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_row="0"
+        android:layout_column="2" />
 
-        <TextView
-            android:id="@+id/textViewFriNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="5"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewSatNum"
-            app:layout_constraintStart_toEndOf="@+id/textViewThuNum"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewWedNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_row="1"
+        android:layout_column="2" />
 
-        <TextView
-            android:id="@+id/textViewSatNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="6"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/textViewSunNum"
-            app:layout_constraintStart_toEndOf="@+id/textViewFriNum"
-            app:layout_constraintTop_toTopOf="parent" />
+    <!-- Thursday -->
+    <TextView
+        android:id="@+id/textViewThu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:text="Thu"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_row="0"
+        android:layout_column="3" />
 
-        <TextView
-            android:id="@+id/textViewSunNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="7"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewSatNum"
-            app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/textViewThuNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_row="1"
+        android:layout_column="3" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Friday -->
+    <TextView
+        android:id="@+id/textViewFri"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:text="Fri"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_row="0"
+        android:layout_column="4" />
+
+    <TextView
+        android:id="@+id/textViewFriNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_row="1"
+        android:layout_column="4" />
+
+    <!-- Saturday -->
+    <TextView
+        android:id="@+id/textViewSat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:text="Sat"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_row="0"
+        android:layout_column="5" />
+
+    <TextView
+        android:id="@+id/textViewSatNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_row="1"
+        android:layout_column="5" />
+
+    <!-- Sunday -->
+    <TextView
+        android:id="@+id/textViewSun"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:text="Sun"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_row="0"
+        android:layout_column="6" />
+
+    <TextView
+        android:id="@+id/textViewSunNum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:layout_columnWeight="1"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_row="1"
+        android:layout_column="6" />
+
+</GridLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/weekDayNumbers"
+        app:layout_constraintTop_toBottomOf="@id/weekDaysGrid"
         app:layout_constraintBottom_toTopOf="@id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
