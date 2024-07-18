@@ -1,5 +1,6 @@
 package io.github.secondbrainplanner;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
@@ -214,8 +215,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_more) {
-            // Mehr Funktionen
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            MainActivity.this.startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
