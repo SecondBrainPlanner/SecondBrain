@@ -6,7 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
@@ -75,6 +78,34 @@ public class DatabaseManager extends SQLiteOpenHelper {
         } catch (IOException e) {
             e.printStackTrace();
             Log.e("DatabaseManager", "Error writing to OutputStream: " + e.getMessage());
+        }
+    }
+
+    public void importDatabaseFromCSV(InputStream inputStream) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            boolean header = true;
+            while ((line = reader.readLine()) != null) {
+                if (header) {
+                    header = false;
+                    continue;
+                }
+                String[] columns = line.split(",");
+                if (columns.length != 8) {
+                    Log.e("DatabaseManager", "Ungültige Zeile: " + line);
+                    continue;
+                }
+                String sql = "INSERT OR REPLACE INTO tasks (id, title, description, created_at, due_date, completed, completed_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                db.execSQL(sql, columns);
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("DatabaseManager", "Fehler beim Importieren der CSV-Datei: " + e.getMessage());
+        } finally {
+            db.endTransaction();
         }
     }
 
