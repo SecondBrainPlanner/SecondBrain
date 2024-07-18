@@ -203,7 +203,7 @@
         android:layout_marginBottom="25dp"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add"
-        android:tint="@color/white"
+        app:tint="@color/trueBlack"
         app:backgroundTint="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
