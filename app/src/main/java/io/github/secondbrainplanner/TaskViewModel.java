@@ -13,7 +13,7 @@ public class TaskViewModel extends ViewModel {
     private final MutableLiveData<List<Object>> _items = new MutableLiveData<>(new ArrayList<>());
     public final LiveData<List<Object>> items = _items;
     private TaskManager taskManager;
-    private int numberOfDaysToShow = 30;
+    private int numberOfDaysToShow = 365;
 
     public TaskViewModel() {}
 
@@ -72,7 +72,7 @@ public class TaskViewModel extends ViewModel {
     
     private void updateDateRangeIfNeeded(List<Task> taskList) {
         long minDate = System.currentTimeMillis();
-        long maxDate = minDate + 30L * 24 * 60 * 60 * 1000; // 30 tage
+        long maxDate = minDate + 365L * 24 * 60 * 60 * 1000; // 365 tage beim start
 
         for (Task task : taskList) {
             if (task.getDue_date() < minDate) {
@@ -83,7 +83,7 @@ public class TaskViewModel extends ViewModel {
             }
         }
 
-        numberOfDaysToShow = (int) (((maxDate - minDate) / (24 * 60 * 60 * 1000)) + 2) + 20; // extra Timestamps nach klammer hinzufügen
+        numberOfDaysToShow = (int) (((maxDate - minDate) / (24 * 60 * 60 * 1000)) + 2) + 40; // extra Timestamps nach aufgabe
     }
 
     private List<Object> generateDateList(List<Task> taskList) {
