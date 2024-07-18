@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.dateTextView.setVisibility(View.VISIBLE);
             holder.nameTextView.setVisibility(View.GONE);
             holder.descriptionTextView.setVisibility(View.GONE);
+            holder.completedCheckBoxView.setVisibility(View.GONE);
 
             boolean hasTasks = false;
             for (int i = position + 1; i < itemList.size(); i++) {
@@ -81,6 +83,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.dateTextView.setVisibility(View.GONE);
             holder.nameTextView.setVisibility(View.VISIBLE);
             holder.descriptionTextView.setVisibility(View.VISIBLE);
+            holder.completedCheckBoxView.setVisibility(View.VISIBLE);
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -138,12 +141,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         TextView dateTextView;
         TextView nameTextView;
         TextView descriptionTextView;
+        CheckBox completedCheckBoxView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             nameTextView = itemView.findViewById(R.id.textViewTaskName);
             descriptionTextView = itemView.findViewById(R.id.textViewTaskDescription);
+            completedCheckBoxView = itemView.findViewById(R.id.checkBoxCompleted);
         }
     }
 
