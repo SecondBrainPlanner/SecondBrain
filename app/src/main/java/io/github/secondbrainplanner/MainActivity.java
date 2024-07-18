@@ -145,24 +145,31 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         switch (dayOfWeek) {
             case Calendar.MONDAY:
                 textViewMon.setBackgroundColor(Color.RED);
+                textViewMonNum.setBackgroundColor(Color.RED);
                 break;
             case Calendar.TUESDAY:
                 textViewTue.setBackgroundColor(Color.RED);
+                textViewTueNum.setBackgroundColor(Color.RED);
                 break;
             case Calendar.WEDNESDAY:
                 textViewWed.setBackgroundColor(Color.RED);
+                textViewWedNum.setBackgroundColor(Color.RED);
                 break;
             case Calendar.THURSDAY:
                 textViewThu.setBackgroundColor(Color.RED);
+                textViewThuNum.setBackgroundColor(Color.RED);
                 break;
             case Calendar.FRIDAY:
                 textViewFri.setBackgroundColor(Color.RED);
+                textViewFriNum.setBackgroundColor(Color.RED);
                 break;
             case Calendar.SATURDAY:
                 textViewSat.setBackgroundColor(Color.RED);
+                textViewSatNum.setBackgroundColor(Color.RED);
                 break;
             case Calendar.SUNDAY:
                 textViewSun.setBackgroundColor(Color.RED);
+                textViewSunNum.setBackgroundColor(Color.RED);
                 break;
         }
     }
@@ -175,6 +182,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         textViewFri.setBackgroundColor(Color.TRANSPARENT);
         textViewSat.setBackgroundColor(Color.TRANSPARENT);
         textViewSun.setBackgroundColor(Color.TRANSPARENT);
+
+        textViewMonNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewTueNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewWedNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewThuNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewFriNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewSatNum.setBackgroundColor(Color.TRANSPARENT);
+        textViewSunNum.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private void updateDateNumbers() {
