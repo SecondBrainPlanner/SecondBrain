@@ -2,10 +2,13 @@ package io.github.secondbrainplanner;
 
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +57,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.dateTextView.setVisibility(View.VISIBLE);
             holder.nameTextView.setVisibility(View.GONE);
             holder.descriptionTextView.setVisibility(View.GONE);
+            holder.completedCheckBoxView.setVisibility(View.GONE);
 
             boolean hasTasks = false;
             for (int i = position + 1; i < itemList.size(); i++) {
@@ -81,6 +85,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.dateTextView.setVisibility(View.GONE);
             holder.nameTextView.setVisibility(View.VISIBLE);
             holder.descriptionTextView.setVisibility(View.VISIBLE);
+            holder.completedCheckBoxView.setVisibility(View.VISIBLE);
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -110,6 +115,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.itemView.setOnClickListener(v -> {
                 new EditTaskSheet(task).show(fragmentManager, "editTaskTag");
             });
+
+            holder.completedCheckBoxView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (compoundButton.isChecked()) {
+                        final Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (compoundButton.isChecked()) {
+                                    String title = task.getTitle();
+                                    String description = task.getDescription();
+                                    long created_at = task.getCreated_at();
+                                    long due_date = task.getDue_date();
+                                    int completed = 1;
+                                    long completed_at = System.currentTimeMillis();
+                                    long updated_at = task.getUpdated_at();
+                                    Task completedTask = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
+                                    completedTask.setId(task.getId());
+                                    taskViewModel.completeTask(completedTask, task);
+                                }
+                            }
+                        }, 1000);
+                    }
+                }
+            });
         }
     }
 
@@ -138,12 +169,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         TextView dateTextView;
         TextView nameTextView;
         TextView descriptionTextView;
+        CheckBox completedCheckBoxView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             nameTextView = itemView.findViewById(R.id.textViewTaskName);
             descriptionTextView = itemView.findViewById(R.id.textViewTaskDescription);
+            completedCheckBoxView = itemView.findViewById(R.id.checkBoxCompleted);
         }
     }
 
