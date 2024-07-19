@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/dateTextView"
@@ -13,12 +13,14 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:padding="5dp"
         android:textColor="#DC6C6767"
         android:visibility="gone"
         android:background="@drawable/bottom_border" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@drawable/bottom_border"
         android:layout_height="wrap_content">
 
         <TextView
