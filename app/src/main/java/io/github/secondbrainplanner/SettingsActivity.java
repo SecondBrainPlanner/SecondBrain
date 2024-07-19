@@ -1,8 +1,10 @@
 package io.github.secondbrainplanner;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,6 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         settingsList.add("Datenbank exportieren");
         settingsList.add("Datenbank importieren");
+        settingsList.add("App zurücksetzen");
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -61,6 +64,8 @@ public class SettingsActivity extends AppCompatActivity {
                     startFilePickerForExport();
                 } else if (position == 1) {
                     startFilePickerForImport();
+                } else if (position == 2) {
+                    showResetConfirmationDialog();
                 }
             }
         });
@@ -128,18 +133,50 @@ public class SettingsActivity extends AppCompatActivity {
                 dbManager.importDatabaseFromCSV(new FileInputStream(pfd.getFileDescriptor()));
                 Toast.makeText(this, "Datenbank importiert von " + uri.getPath(), Toast.LENGTH_LONG).show();
                 pfd.close();
-                Intent mStartActivity = new Intent(getApplicationContext(), MainActivity.class);
-                int mPendingIntentId = 123456;
-                PendingIntent mPendingIntent = PendingIntent.getActivity(getApplicationContext(), mPendingIntentId, mStartActivity, PendingIntent.FLAG_IMMUTABLE);
-                AlarmManager mgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                System.exit(0);
+                restartApp();
             }
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Fehler beim Importieren der Datenbank", Toast.LENGTH_LONG).show();
             Log.e("SettingsActivity", "Error importing database: " + e.getMessage());
         }
+    }
+
+    private void showResetConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("App zurücksetzen");
+        builder.setMessage("Möchten Sie die App wirklich zurücksetzen?");
+
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                resetDatabase();
+            }
+        });
+
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void resetDatabase() {
+        getApplicationContext().deleteDatabase("secondbrain.db");
+        restartApp();
+    }
+
+    private void restartApp() {
+        Intent mStartActivity = new Intent(getApplicationContext(), MainActivity.class);
+        int mPendingIntentId = 123456;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(getApplicationContext(), mPendingIntentId, mStartActivity, PendingIntent.FLAG_IMMUTABLE);
+        AlarmManager mgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+        System.exit(0);
     }
 
 
