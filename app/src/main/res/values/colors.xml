@@ -9,9 +9,10 @@
     <color name="trueBlack">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dark_grey">#2B2929</color>
-    <color name="darker_grey">#292828</color>
+    <color name="darker_grey">#1E1E1E</color>
     <color name="grey">#8A8686</color>
-    <color name="light_grey">#444444</color>
-    <color name="red">#B50000</color>
-    <color name="topBarHighlightingColor">#B50000</color>
+    <color name="background">#202020</color>
+    <color name="light_grey">#333333</color>
+    <color name="red">#E27065</color>
+    <color name="topBarHighlightingColor">#E27065</color>
 </resources>
