@@ -29,8 +29,7 @@ public class CompletedTaskActivity extends AppCompatActivity {
 
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
-
-        completedTaskAdapter = new CompletedTaskAdapter(taskViewModel, getSupportFragmentManager(), binding.recyclerViewCompletedTasks, task -> {
+        completedTaskAdapter = new CompletedTaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerViewCompletedTasks, task -> {
             String title = task.getTitle();
             String description = task.getDescription();
             long created_at = task.getCreated_at();

@@ -11,7 +11,7 @@
         android:id="@+id/textViewTitleCompleted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Erledigte Aufgaben"
+        android:text="@string/completed_tasks"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@android:color/white"
