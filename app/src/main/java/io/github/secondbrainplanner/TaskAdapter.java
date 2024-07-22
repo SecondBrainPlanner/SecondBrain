@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -89,29 +90,46 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Toast.makeText(v.getContext(), "Task wird in 2 Sekunden gelöscht: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "2 Sekunden gedrückt halten zum Löschen: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+
+                    final boolean[] wasPressed = {true};
 
                     new CountDownTimer(2000, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            long secondsRemaining = millisUntilFinished / 1000;
-                            Toast.makeText(v.getContext(), "Noch " + secondsRemaining + " Sekunden...", Toast.LENGTH_SHORT).show();
+                            if (!wasPressed[0]) {
+                                cancel();
+                            }
                         }
 
                         @Override
                         public void onFinish() {
-                            if (taskViewModel != null && task != null) {
-                                taskViewModel.deleteTask(task);
-                            } else {
-                                //Logge den Fehler im Android-Log, ansonsten stürzt die App ab.
-                                Log.e("TaskAdapter", "taskViewModel or task is null");
+                            if (wasPressed[0]) {
+                                if (taskViewModel != null && task != null) {
+                                    Toast.makeText(v.getContext(), "Task gelöscht: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+                                    taskViewModel.deleteTask(task);
+                                } else {
+                                    //Logge den Fehler im Android-Log, ansonsten stürzt die App ab.
+                                    Log.e("TaskAdapter", "taskViewModel or task is null");
+                                }
                             }
                         }
                     }.start();
 
+                    holder.itemView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (event.getAction() == MotionEvent.ACTION_UP) {
+                                wasPressed[0] = false;
+                            }
+                            return false;
+                        }
+                    });
+
                     return true;
                 }
             });
+
             holder.itemView.setOnClickListener(v -> {
                 new EditTaskSheet(task).show(fragmentManager, "editTaskTag");
             });
