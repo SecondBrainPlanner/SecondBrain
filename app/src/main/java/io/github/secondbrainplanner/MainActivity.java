@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -44,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         EdgeToEdge.enable(this);
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        Window window = getWindow();
+        window.setNavigationBarColor(ContextCompat.getColor(this, R.color.light_grey));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darker_grey));
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
