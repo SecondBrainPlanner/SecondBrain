@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="new_task">Neue Aufgabe</string>
+    <string name="name">Name</string>
+    <string name="description">Beschreibung</string>
+    <string name="date">Datum</string>
+    <string name="save">Speichern</string>
+    <string name="edit_task">Aufgabe ändern</string>
+    <string name="settings">Einstellungen</string>
+    <string name="monday">M</string>
+    <string name="tuesday">D</string>
+    <string name="wednesday">M</string>
+    <string name="thursday">D</string>
+    <string name="friday">F</string>
+    <string name="saturday">S</string>
+    <string name="sunday">S</string>
+    <string name="overview">Übersicht</string>
+    <string name="export_database">Datenbank exportieren</string>
+    <string name="import_database">Datenbank importieren</string>
+    <string name="reset_app">App zurücksetzen</string>
+</resources>

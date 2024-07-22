@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -44,6 +45,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         EdgeToEdge.enable(this);
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        Window window = getWindow();
+        window.setNavigationBarColor(ContextCompat.getColor(this, R.color.light_grey));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.darker_grey));
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -100,13 +105,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         String currentMonthAndYear = monthDateFormat.format(Calendar.getInstance().getTime());
         monthAndYear.setText(currentMonthAndYear);
 
-        textViewMon.setBackgroundColor(Color.TRANSPARENT);
-        textViewTue.setBackgroundColor(Color.TRANSPARENT);
-        textViewWed.setBackgroundColor(Color.TRANSPARENT);
-        textViewThu.setBackgroundColor(Color.TRANSPARENT);
-        textViewFri.setBackgroundColor(Color.TRANSPARENT);
-        textViewSat.setBackgroundColor(Color.TRANSPARENT);
-        textViewSun.setBackgroundColor(Color.TRANSPARENT);
+        resetWeekDayHighlights();
     }
     private void updateMonthAndYear() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
@@ -115,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             Object item = taskAdapter.getItemAtPosition(firstVisiblePosition);
             if (item instanceof Long) {
                 long dateInMillis = (Long) item;
-                Calendar calendar = Calendar.getInstance();
+                Calendar calendar = CalendarUtils.getGermanCalendar();
                 calendar.setTimeInMillis(dateInMillis);
                 SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
                 String monthAndYearString = monthAndYearFormat.format(calendar.getTime());
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             Object item = taskAdapter.getItemAtPosition(firstVisiblePosition);
             if (item instanceof Long) {
                 long dateInMillis = (Long) item;
-                Calendar calendar = Calendar.getInstance();
+                Calendar calendar = CalendarUtils.getGermanCalendar();
                 calendar.setTimeInMillis(dateInMillis);
                 int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
                 highlightWeekDay(dayOfWeek);
@@ -201,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             Object item = taskAdapter.getItemAtPosition(firstVisiblePosition);
             if (item instanceof Long) {
                 long dateInMillis = (Long) item;
-                Calendar calendar = Calendar.getInstance();
+                Calendar calendar = CalendarUtils.getGermanCalendar();
                 calendar.setTimeInMillis(dateInMillis);
 
                 textViewMonNum.setText(getDayOfMonth(calendar, Calendar.MONDAY));
@@ -218,7 +217,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     private String getDayOfMonth(Calendar calendar, int dayOfWeek) {
         Calendar cal = (Calendar) calendar.clone();
         cal.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-        return String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        if (cal.get(Calendar.DAY_OF_WEEK) != dayOfWeek) {
+            cal.add(Calendar.DAY_OF_MONTH, dayOfWeek - cal.get(Calendar.DAY_OF_WEEK));
+            dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        }
+        return String.valueOf(dayOfMonth);
     }
 
     @Override

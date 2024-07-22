@@ -53,9 +53,9 @@ public class SettingsActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         dbManager = new DatabaseManager(this);
 
-        settingsList.add("Datenbank exportieren");
-        settingsList.add("Datenbank importieren");
-        settingsList.add("App zurücksetzen");
+        settingsList.add(getString(R.string.export_database));
+        settingsList.add(getString(R.string.import_database));
+        settingsList.add(getString(R.string.reset_app));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
