@@ -58,7 +58,8 @@ public class TaskManager {
     public List<Task> getAllTasks() {
         List<Task> taskList = new ArrayList<>();
         SQLiteDatabase db = dbManager.getReadableDatabase();
-        Cursor cursor = db.query("tasks", null, null, null, null, null, null);
+        String selection = "completed == 0";
+        Cursor cursor = db.query("tasks", null, selection, null, null, null, null);
         if(cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
@@ -72,9 +73,7 @@ public class TaskManager {
 
                 Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
                 task.setId(id);
-                if (task.getCompleted() == 0) {
-                    taskList.add(task);
-                }
+                taskList.add(task);
             } while (cursor.moveToNext());
         }
         cursor.close();
