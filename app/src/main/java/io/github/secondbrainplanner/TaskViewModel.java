@@ -84,6 +84,21 @@ public class TaskViewModel extends ViewModel {
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
     }
+
+    public void uncompleteTask(Task task) {
+        taskManager.updateTask(
+                task.getId(), task.getTitle(), task.getDescription(),
+                task.getCreated_at(), task.getDue_date(),
+                task.getCompleted(), task.getCompleted_at(),
+                task.getUpdated_at()
+        );
+
+        List<Task> currentTaskList = extractTasks(_items.getValue());
+        currentTaskList.add(task);
+
+        updateDateRangeIfNeeded(currentTaskList);
+        _items.setValue(generateDateList(currentTaskList));
+    }
     
     private void updateDateRangeIfNeeded(List<Task> taskList) {
         long minDate = System.currentTimeMillis();
@@ -143,4 +158,9 @@ public class TaskViewModel extends ViewModel {
         }
         return taskList;
     }
+
+    public LiveData<List<Task>> getCompletedTasks() {
+        return new MutableLiveData<>(taskManager.getAllCompletedTasks());
+    }
+
 }
