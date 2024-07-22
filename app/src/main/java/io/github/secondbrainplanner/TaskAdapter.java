@@ -120,24 +120,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (compoundButton.isChecked()) {
-                        final Handler handler = new Handler(Looper.getMainLooper());
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (compoundButton.isChecked()) {
-                                    String title = task.getTitle();
-                                    String description = task.getDescription();
-                                    long created_at = task.getCreated_at();
-                                    long due_date = task.getDue_date();
-                                    int completed = 1;
-                                    long completed_at = System.currentTimeMillis();
-                                    long updated_at = task.getUpdated_at();
-                                    Task completedTask = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
-                                    completedTask.setId(task.getId());
-                                    taskViewModel.completeTask(completedTask, task);
-                                }
-                            }
-                        }, 1000);
+                        String title = task.getTitle();
+                        String description = task.getDescription();
+                        long created_at = task.getCreated_at();
+                        long due_date = task.getDue_date();
+                        int completed = 1;
+                        long completed_at = System.currentTimeMillis();
+                        long updated_at = task.getUpdated_at();
+                        Task completedTask = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
+                        completedTask.setId(task.getId());
+                        taskViewModel.completeTask(completedTask, task);
                     }
                 }
             });

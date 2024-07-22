@@ -234,6 +234,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             MainActivity.this.startActivity(intent);
             return true;
+        } else if (id == R.id.action_checklist) {
+            Intent intent = new Intent(MainActivity.this, CompletedTaskActivity.class);
+            MainActivity.this.startActivity(intent);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
