@@ -34,7 +34,7 @@ public class TaskViewModel extends ViewModel {
         _items.setValue(generateDateList(taskList));
     }
 
-    public void addTask(Task task) {
+    public void addTask(Task task, boolean reminder) {
         long id = taskManager.insertTask(
                 task.getTitle(), task.getDescription(),
                 task.getCreated_at(), task.getDue_date(),
@@ -49,9 +49,11 @@ public class TaskViewModel extends ViewModel {
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(task.getDue_date());
-        AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
+        if (reminder) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(task.getDue_date());
+            AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
+        }
     }
 
     public void deleteTask(Task task) {

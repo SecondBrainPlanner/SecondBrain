@@ -78,6 +78,14 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
                 }
             }
         });
+        binding.editTaskReminder.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    ((BottomSheetDialog) getDialog()).getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        });
     }
 
     @Override
