@@ -123,11 +123,7 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
                     @Override
                     public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
                         String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
-                        if (selectedHour == 0 && selectedMinute == 0) {
-                            binding.newTaskReminder.setText("");
-                        } else {
-                            binding.newTaskReminder.setText(selectedTime);
-                        }
+                        binding.newTaskReminder.setText(selectedTime);
                     }
                 },
                 hour, minute, true
@@ -182,8 +178,12 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
             calendar.setTime(date);
 
             long millisFromStartOfDay = calendar.get(Calendar.HOUR_OF_DAY) * 3600000L + calendar.get(Calendar.MINUTE) * 60000L;
+            if (millisFromStartOfDay == 0) {
+                return 100;
+            } else {
+                return millisFromStartOfDay;
+            }
 
-            return millisFromStartOfDay;
         } catch (ParseException e) {
             e.printStackTrace();
             return -1;

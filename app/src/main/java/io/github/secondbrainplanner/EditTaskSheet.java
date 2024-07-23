@@ -131,11 +131,7 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
                         @Override
                         public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
                             String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
-                            if (selectedHour == 0 && selectedMinute == 0) {
-                                binding.editTaskReminder.setText("");
-                            } else {
-                                binding.editTaskReminder.setText(selectedTime);
-                            }
+                            binding.editTaskReminder.setText(selectedTime);
                         }
                     },
                     hour, minute, true
@@ -198,8 +194,12 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
             calendar.setTime(date);
 
             long millisFromStartOfDay = calendar.get(Calendar.HOUR_OF_DAY) * 3600000L + calendar.get(Calendar.MINUTE) * 60000L;
+            if (millisFromStartOfDay == 0) {
+                return 100;
+            } else {
+                return millisFromStartOfDay;
+            }
 
-            return millisFromStartOfDay;
         } catch (ParseException e) {
             e.printStackTrace();
             return -1;
@@ -210,7 +210,9 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
         Instant instant = Instant.ofEpochMilli(date);
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        if (dateTime.format(formatter).equals("00:00")) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        if (calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0 && calendar.get(Calendar.SECOND) == 0 && calendar.get(Calendar.MILLISECOND) == 0) {
             return "";
         } else {
             return dateTime.format(formatter);
