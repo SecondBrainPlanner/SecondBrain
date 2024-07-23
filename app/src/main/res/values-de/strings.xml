@@ -20,4 +20,13 @@
     <string name="reset_app">App zurücksetzen</string>
     <string name="completed_tasks">Erledigte Aufgaben</string>
     <string name="completed_at">"Erledigt am: "</string>
+    <string name="database_exported_to">"Datenbank exportiert nach "</string>
+    <string name="error_while_exporting_the_database">Fehler beim Exportieren der Datenbank</string>
+    <string name="database_imported_from">"Datenbank importiert von "</string>
+    <string name="error_while_importing_the_database">Fehler beim Importieren der Datenbank</string>
+    <string name="do_you_really_want_to_reset_the_app">Möchten Sie die App wirklich zurücksetzen?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="press_and_hold_for_2_seconds_to_delete">"2 Sekunden gedrückt halten zum Löschen: "</string>
+    <string name="task_deleted">"Task gelöscht: "</string>
 </resources>
