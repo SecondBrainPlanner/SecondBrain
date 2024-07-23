@@ -99,7 +99,6 @@ public class TaskViewModel extends ViewModel {
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
     }
-    
     private void updateDateRangeIfNeeded(List<Task> taskList) {
         long minDate = System.currentTimeMillis();
         long maxDate = minDate + 365L * 24 * 60 * 60 * 1000; // 365 tage beim start
@@ -120,11 +119,21 @@ public class TaskViewModel extends ViewModel {
         List<Object> itemList = new ArrayList<>();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(2024,1,1); // max oldest task date is 1.1.2024
+
+        Calendar todayCalendar = Calendar.getInstance();    // set calender to start 0:00
+        todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        todayCalendar.set(Calendar.MINUTE, 0);
+        todayCalendar.set(Calendar.SECOND, 0);
+        todayCalendar.set(Calendar.MILLISECOND, 0);
+        long todayMillis = todayCalendar.getTimeInMillis();
 
         for (int i = 0; i < numberOfDaysToShow; i++) {
             long currentDate = calendar.getTimeInMillis();
-            itemList.add(currentDate);
+
+            if (currentDate >= todayMillis) {       // no timestamp for past days, only if time >= 0:00 today
+                itemList.add(currentDate);
+            }
 
             for (Task task : taskList) {
                 if (isSameDay(task.getDue_date(), currentDate)) {
