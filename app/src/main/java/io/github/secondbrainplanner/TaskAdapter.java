@@ -1,5 +1,6 @@
 package io.github.secondbrainplanner;
 
+import android.content.Context;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,13 +34,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private FragmentManager fragmentManager;
     private RecyclerView recyclerView;
     private onDateClickListener onDateClickListener;
+    private Context context;
 
-    public TaskAdapter(TaskViewModel taskViewModel, FragmentManager fragmentManager, RecyclerView recyclerView, onDateClickListener onDateClickListener) {
+    public TaskAdapter(Context context, TaskViewModel taskViewModel, FragmentManager fragmentManager, RecyclerView recyclerView, onDateClickListener onDateClickListener) {
         this.itemList = new ArrayList<>();
         this.taskViewModel = taskViewModel;
         this.fragmentManager = fragmentManager;
         this.recyclerView = recyclerView;
         this.onDateClickListener = onDateClickListener;
+        this.context = context;
     }
 
     @NonNull
@@ -90,7 +93,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Toast.makeText(v.getContext(), "2 Sekunden gedrückt halten zum Löschen: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), context.getString(R.string.press_and_hold_for_2_seconds_to_delete) + task.getTitle(), Toast.LENGTH_SHORT).show();
 
                     final boolean[] wasPressed = {true};
 
@@ -106,7 +109,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                         public void onFinish() {
                             if (wasPressed[0]) {
                                 if (taskViewModel != null && task != null) {
-                                    Toast.makeText(v.getContext(), "Task gelöscht: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(v.getContext(), context.getString(R.string.task_deleted) + task.getTitle(), Toast.LENGTH_SHORT).show();
                                     taskViewModel.deleteTask(task);
                                 } else {
                                     //Logge den Fehler im Android-Log, ansonsten stürzt die App ab.

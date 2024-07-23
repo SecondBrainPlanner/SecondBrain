@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
 
-        taskAdapter = new TaskAdapter(taskViewModel, getSupportFragmentManager(), binding.recyclerView, this);
+        taskAdapter = new TaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerView, this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(taskAdapter);
 

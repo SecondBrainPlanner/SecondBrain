@@ -116,12 +116,12 @@ public class SettingsActivity extends AppCompatActivity {
             if (pfd != null) {
                 FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
                 dbManager.exportDatabaseToCSV(fileOutputStream);
-                Toast.makeText(this, "Datenbank exportiert nach " + uri.getPath(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.database_exported_to) + uri.getPath(), Toast.LENGTH_LONG).show();
                 pfd.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Fehler beim Exportieren der Datenbank", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.error_while_exporting_the_database, Toast.LENGTH_LONG).show();
             Log.e("SettingsActivity", "Error exporting database: " + e.getMessage());
         }
     }
@@ -131,30 +131,30 @@ public class SettingsActivity extends AppCompatActivity {
             ParcelFileDescriptor pfd = getContentResolver().openFileDescriptor(uri, "r");
             if (pfd != null) {
                 dbManager.importDatabaseFromCSV(new FileInputStream(pfd.getFileDescriptor()));
-                Toast.makeText(this, "Datenbank importiert von " + uri.getPath(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.database_imported_from) + uri.getPath(), Toast.LENGTH_LONG).show();
                 pfd.close();
                 restartApp();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Fehler beim Importieren der Datenbank", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.error_while_importing_the_database, Toast.LENGTH_LONG).show();
             Log.e("SettingsActivity", "Error importing database: " + e.getMessage());
         }
     }
 
     private void showResetConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("App zurücksetzen");
-        builder.setMessage("Möchten Sie die App wirklich zurücksetzen?");
+        builder.setTitle(R.string.reset_app);
+        builder.setMessage(R.string.do_you_really_want_to_reset_the_app);
 
-        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 resetDatabase();
             }
         });
 
-        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
