@@ -20,4 +20,13 @@
     <string name="reset_app">reset app</string>
     <string name="completed_tasks">completed tasks</string>
     <string name="completed_at">"completed at: "</string>
+    <string name="database_exported_to">"Database exported to "</string>
+    <string name="error_while_exporting_the_database">Error while exporting the database</string>
+    <string name="database_imported_from">"Database imported from "</string>
+    <string name="error_while_importing_the_database">Error while importing the database</string>
+    <string name="do_you_really_want_to_reset_the_app">Do you really want to reset the app?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="press_and_hold_for_2_seconds_to_delete">"Press and hold for 2 seconds to delete: "</string>
+    <string name="task_deleted">"Task deleted: "</string>
 </resources>
