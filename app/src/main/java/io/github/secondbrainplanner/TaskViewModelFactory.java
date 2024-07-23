@@ -18,7 +18,7 @@ public class TaskViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(TaskViewModel.class)) {
-            TaskViewModel viewModel = new TaskViewModel();
+            TaskViewModel viewModel = new TaskViewModel(application);
             TaskManager taskManager = new TaskManager(application.getApplicationContext());
             viewModel.setTaskManager(taskManager);
             return (T) viewModel;

@@ -1,6 +1,9 @@
 package io.github.secondbrainplanner;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,9 +16,12 @@ public class TaskViewModel extends ViewModel {
     private final MutableLiveData<List<Object>> _items = new MutableLiveData<>(new ArrayList<>());
     public final LiveData<List<Object>> items = _items;
     private TaskManager taskManager;
+    private final Application application;
     private int numberOfDaysToShow = 365;
 
-    public TaskViewModel() {}
+    public TaskViewModel(@NonNull Application application) {
+        this.application = application;
+    }
 
     public void setTaskManager(TaskManager taskManager) {
         this.taskManager = taskManager;
@@ -42,6 +48,10 @@ public class TaskViewModel extends ViewModel {
 
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(task.getDue_date());
+        AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
     }
 
     public void deleteTask(Task task) {
@@ -52,6 +62,8 @@ public class TaskViewModel extends ViewModel {
 
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
+
+        AlarmHelper.cancelAlarm(application.getApplicationContext(), task.getId());
     }
 
     public void editTask(Task task, Task oldtask) {
@@ -68,6 +80,11 @@ public class TaskViewModel extends ViewModel {
 
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
+
+        AlarmHelper.cancelAlarm(application.getApplicationContext(), oldtask.getId());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(task.getDue_date());
+        AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
     }
 
     public void completeTask(Task task, Task oldtask) {
@@ -83,6 +100,8 @@ public class TaskViewModel extends ViewModel {
 
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
+
+        AlarmHelper.cancelAlarm(application.getApplicationContext(), oldtask.getId());
     }
 
     public void uncompleteTask(Task task) {
@@ -98,6 +117,10 @@ public class TaskViewModel extends ViewModel {
 
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(task.getDue_date());
+        AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
     }
     
     private void updateDateRangeIfNeeded(List<Task> taskList) {
