@@ -123,7 +123,11 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
                     @Override
                     public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
                         String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
-                        binding.newTaskReminder.setText(selectedTime);
+                        if (selectedHour == 0 && selectedMinute == 0) {
+                            binding.newTaskReminder.setText("");
+                        } else {
+                            binding.newTaskReminder.setText(selectedTime);
+                        }
                     }
                 },
                 hour, minute, true

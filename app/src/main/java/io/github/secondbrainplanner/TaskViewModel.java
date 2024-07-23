@@ -68,7 +68,7 @@ public class TaskViewModel extends ViewModel {
         AlarmHelper.cancelAlarm(application.getApplicationContext(), task.getId());
     }
 
-    public void editTask(Task task, Task oldtask) {
+    public void editTask(Task task, Task oldtask, boolean reminder) {
         taskManager.updateTask(
                 task.getId(), task.getTitle(), task.getDescription(),
                 task.getCreated_at(), task.getDue_date(),
@@ -84,9 +84,11 @@ public class TaskViewModel extends ViewModel {
         _items.setValue(generateDateList(currentTaskList));
 
         AlarmHelper.cancelAlarm(application.getApplicationContext(), oldtask.getId());
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(task.getDue_date());
-        AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
+        if (reminder) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(task.getDue_date());
+            AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
+        }
     }
 
     public void completeTask(Task task, Task oldtask) {
