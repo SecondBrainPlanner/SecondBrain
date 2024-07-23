@@ -29,4 +29,5 @@
     <string name="no">No</string>
     <string name="press_and_hold_for_2_seconds_to_delete">"Press and hold for 2 seconds to delete: "</string>
     <string name="task_deleted">"Task deleted: "</string>
+    <string name="reminder">reminder</string>
 </resources>

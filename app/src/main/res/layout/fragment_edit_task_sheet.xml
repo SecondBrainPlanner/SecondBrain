@@ -75,6 +75,25 @@
     </com.google.android.material.textfield.TextInputLayout>
     <!-- end datepicker -->
 
+    <!-- start reminder -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_marginHorizontal="20dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/editTaskReminder"
+            android:hint="@string/reminder">
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <!-- end reminder -->
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/editTaskAddButton"

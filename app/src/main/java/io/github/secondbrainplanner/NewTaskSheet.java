@@ -1,11 +1,13 @@
 package io.github.secondbrainplanner;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -46,6 +48,9 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
         binding.newTaskDate.setOnClickListener(v -> showDatePicker());
         binding.newTaskDate.setFocusable(false);
         binding.newTaskDate.setClickable(true);
+        binding.newTaskReminder.setOnClickListener(v -> showTimePicker());
+        binding.newTaskReminder.setFocusable(false);
+        binding.newTaskReminder.setClickable(true);
 
         binding.newTaskDate.setText(currentDate);
 
@@ -66,6 +71,14 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
             }
         });
         binding.newTaskDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    ((BottomSheetDialog) getDialog()).getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }
+        });
+        binding.newTaskReminder.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus) {
@@ -99,21 +112,46 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
         datePickerDialog.show();
     }
 
+    private void showTimePicker() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                getContext(),
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int selectedHour, int selectedMinute) {
+                        String selectedTime = String.format("%02d:%02d", selectedHour, selectedMinute);
+                        binding.newTaskReminder.setText(selectedTime);
+                    }
+                },
+                hour, minute, true
+        );
+
+        timePickerDialog.show();
+    }
+
     private void saveAction() {
         String title = binding.newTaskName.getText().toString();
         String description = binding.newTaskDescription.getText().toString();
         String due_date_str = binding.newTaskDate.getText().toString();
+        String reminder_str = binding.newTaskReminder.getText().toString();
         if (!title.isEmpty() && !description.isEmpty() && !due_date_str.isEmpty()) {
             long created_at = System.currentTimeMillis();
             long due_date = parseDate(due_date_str);
+            if (!reminder_str.isEmpty()) {
+                due_date = parseDate(due_date_str) + parseTimeToMillis(reminder_str);
+            }
             int completed = 0;
             long completed_at = 0;
             long updated_at = created_at;
             Task task = new Task(title, description, created_at, due_date, completed, completed_at, updated_at);
-            taskViewModel.addTask(task);
+            taskViewModel.addTask(task, !reminder_str.isEmpty());
             binding.newTaskName.setText("");
             binding.newTaskDescription.setText("");
             binding.newTaskDate.setText("");
+            binding.newTaskReminder.setText("");
             dismiss();
         }
     }
@@ -128,5 +166,29 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
             return System.currentTimeMillis();
         }
     }
+
+    private long parseTimeToMillis(String timeStr) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date date = sdf.parse(timeStr);
+
+            long millis = date.getTime();
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            long millisFromStartOfDay = calendar.get(Calendar.HOUR_OF_DAY) * 3600000L + calendar.get(Calendar.MINUTE) * 60000L;
+            if (millisFromStartOfDay == 0) {
+                return 100;
+            } else {
+                return millisFromStartOfDay;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
 }
 
