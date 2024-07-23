@@ -1,5 +1,6 @@
 package io.github.secondbrainplanner;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,14 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
     private FragmentManager fragmentManager;
     private RecyclerView recyclerView;
     private OnUncompleteTaskListener onUncompleteTaskListener;
+    private Context context;
 
-    public CompletedTaskAdapter(TaskViewModel taskViewModel, FragmentManager fragmentManager, RecyclerView recyclerView, OnUncompleteTaskListener onUncompleteTaskListener) {
+    public CompletedTaskAdapter(Context context, TaskViewModel taskViewModel, FragmentManager fragmentManager, RecyclerView recyclerView, OnUncompleteTaskListener onUncompleteTaskListener) {
         this.taskViewModel = taskViewModel;
         this.fragmentManager = fragmentManager;
         this.recyclerView = recyclerView;
         this.onUncompleteTaskListener = onUncompleteTaskListener;
+        this.context = context;
     }
 
     @NonNull
@@ -44,7 +47,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
         Task task = completedTasks.get(position);
         holder.nameTextView.setText(task.getTitle());
         holder.descriptionTextView.setText(task.getDescription());
-        holder.completedDateTextView.setText("Erledigt am: " + convertToDate(task.getCompleted_at()));
+        holder.completedDateTextView.setText(context.getString(R.string.completed_at) + convertToDate(task.getCompleted_at()));
         holder.completedCheckBoxView.setChecked(task.getCompleted() != 0);
 
         holder.completedCheckBoxView.setOnCheckedChangeListener((buttonView, isChecked) -> {
