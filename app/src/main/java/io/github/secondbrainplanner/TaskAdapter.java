@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -90,6 +91,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.nameTextView.setVisibility(View.VISIBLE);
             holder.descriptionTextView.setVisibility(View.VISIBLE);
             holder.completedCheckBoxView.setVisibility(View.VISIBLE);
+
+            Calendar todayCalendar = Calendar.getInstance();
+            todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            todayCalendar.set(Calendar.MINUTE, 0);
+            todayCalendar.set(Calendar.SECOND, 0);
+            todayCalendar.set(Calendar.MILLISECOND, 0);
+            long todayMillis = todayCalendar.getTimeInMillis();
+
+            if (task.getDue_date() < todayCalendar.getTimeInMillis()) {
+                holder.nameTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
+                holder.descriptionTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
+            } else {
+                holder.nameTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
+                holder.descriptionTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
+            }
+
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
