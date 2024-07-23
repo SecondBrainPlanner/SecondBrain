@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import io.github.secondbrainplanner.databinding.ActivityCompletedTasksBinding;
@@ -34,6 +35,17 @@ public class CompletedTaskActivity extends AppCompatActivity {
             String description = task.getDescription();
             long created_at = task.getCreated_at();
             long due_date = task.getDue_date();
+
+            Calendar todayCalendar = Calendar.getInstance();
+            todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            todayCalendar.set(Calendar.MINUTE, 0);
+            todayCalendar.set(Calendar.SECOND, 0);
+            todayCalendar.set(Calendar.MILLISECOND, 0);
+
+            if (due_date < todayCalendar.getTimeInMillis()){
+                due_date = System.currentTimeMillis();
+            }
+
             int completed = 0;
             long completed_at = 0;
             long updated_at = task.getUpdated_at();
