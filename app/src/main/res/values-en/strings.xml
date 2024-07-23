@@ -20,4 +20,5 @@
     <string name="reset_app">reset app</string>
     <string name="completed_tasks">Completed Tasks</string>
     <string name="completed_at">"completed at: "</string>
+    <string name="reminder">reminder</string>
 </resources>
