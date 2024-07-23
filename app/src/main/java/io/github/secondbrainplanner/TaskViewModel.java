@@ -119,7 +119,7 @@ public class TaskViewModel extends ViewModel {
         List<Object> itemList = new ArrayList<>();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis() - 864000000L); // max oldest task date
+        calendar.set(2024,1,1); // max oldest task date is 1.1.2024
 
         Calendar todayCalendar = Calendar.getInstance();    // set calender to start 0:00
         todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
