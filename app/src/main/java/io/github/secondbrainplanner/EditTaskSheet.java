@@ -93,6 +93,7 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
                 }
             }
         });
+       // binding.resetReminderButton.setOnClickListener(v -> binding.editTaskReminder.setText(""));
     }
 
     @Override
