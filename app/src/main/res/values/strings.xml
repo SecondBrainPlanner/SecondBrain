@@ -31,4 +31,5 @@
     <string name="task_deleted">"Task deleted: "</string>
     <string name="reminder">reminder</string>
     <string name="name_or_date_is_empty">Name or date is empty</string>
+    <string name="task_from">"Task from "</string>
 </resources>
