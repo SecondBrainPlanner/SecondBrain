@@ -30,6 +30,8 @@
     <string name="press_and_hold_for_2_seconds_to_delete">"2 Sekunden gedrückt halten zum Löschen: "</string>
     <string name="task_deleted">"Task gelöscht: "</string>
     <string name="reminder">Erinnerung</string>
-    <string name="name_or_date_is_empty">Name oder Datum ist leer</string>
+    <string name="name_or_date_is_empty">Name ist leer</string>
     <string name="task_from">"Aufgabe vom "</string>
+    <string name="no_reminder_set">keine Erinnerung gesetzt</string>
+    <string name="reminder_deleted">Erinnerung gelöscht</string>
 </resources>
