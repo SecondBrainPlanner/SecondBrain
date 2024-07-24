@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -161,6 +162,8 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
             binding.newTaskDate.setText("");
             binding.newTaskReminder.setText("");
             dismiss();
+        } else {
+            Toast.makeText(getContext(), getString(R.string.name_or_date_is_empty), Toast.LENGTH_SHORT).show();
         }
     }
 
