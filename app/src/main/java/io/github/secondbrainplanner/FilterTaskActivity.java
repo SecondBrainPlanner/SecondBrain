@@ -1,14 +1,18 @@
 package io.github.secondbrainplanner;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -31,13 +35,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import io.github.secondbrainplanner.databinding.ActivityMainBinding;
+import io.github.secondbrainplanner.databinding.ActivityFilterTaskBinding;
 
-public class MainActivity extends AppCompatActivity implements TaskAdapter.onDateClickListener {
+public class FilterTaskActivity extends AppCompatActivity implements FilterTaskAdapter.onDateClickListener {
 
-    private ActivityMainBinding binding;
+    private ActivityFilterTaskBinding binding;
     private TaskViewModel taskViewModel;
-    private TaskAdapter taskAdapter;
+    private FilterTaskAdapter filterTaskAdapter;
     private TextView textViewMon, textViewTue, textViewWed, textViewThu, textViewFri, textViewSat, textViewSun;
     private TextView textViewMonNum, textViewTueNum, textViewWedNum, textViewThuNum, textViewFriNum, textViewSatNum, textViewSunNum;
     private TextView monthAndYear;
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         window.setNavigationBarColor(ContextCompat.getColor(this, R.color.light_grey));
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.darker_grey));
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityFilterTaskBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         monthAndYear = findViewById(R.id.monthAndYear);
@@ -81,11 +85,11 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
 
-        taskAdapter = new TaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerView, this);
+        filterTaskAdapter = new FilterTaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerView, this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(taskAdapter);
+        binding.recyclerView.setAdapter(filterTaskAdapter);
 
-        taskViewModel.items.observe(this, items -> taskAdapter.setItems(items));
+        taskViewModel.items.observe(this, items -> filterTaskAdapter.setItems(items));
 
         binding.newTaskButton.setOnClickListener(view -> new NewTaskSheet(currentDate).show(getSupportFragmentManager(), "newTaskTag"));
 
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (view, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.filter), (view, insets) -> {
             Insets systemInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             view.setPadding(systemInsets.left, systemInsets.top, systemInsets.right, systemInsets.bottom);
             return WindowInsetsCompat.CONSUMED;
@@ -116,12 +120,13 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
                 requestPermissions(new String[] {Manifest.permission.POST_NOTIFICATIONS}, 1);
             }
         }
+
     }
     private void updateMonthAndYear() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
         if (layoutManager != null) {
             int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-            Object item = taskAdapter.getItemAtPosition(firstVisiblePosition);
+            Object item = filterTaskAdapter.getItemAtPosition(firstVisiblePosition);
             if (item instanceof Long) {
                 long dateInMillis = (Long) item;
                 Calendar calendar = CalendarUtils.getGermanCalendar();
@@ -139,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
         if (layoutManager != null) {
             int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-            Object item = taskAdapter.getItemAtPosition(firstVisiblePosition);
+            Object item = filterTaskAdapter.getItemAtPosition(firstVisiblePosition);
             if (item instanceof Long) {
                 long dateInMillis = (Long) item;
                 Calendar calendar = CalendarUtils.getGermanCalendar();
@@ -207,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
         if (layoutManager != null) {
             int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-            Object item = taskAdapter.getItemAtPosition(firstVisiblePosition);
+            Object item = filterTaskAdapter.getItemAtPosition(firstVisiblePosition);
             if (item instanceof Long) {
                 long dateInMillis = (Long) item;
                 Calendar calendar = CalendarUtils.getGermanCalendar();
@@ -238,6 +243,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        MenuItem filterItem = menu.findItem(R.id.action_filter);
+        if (filterItem != null && filterItem.getIcon() != null) {
+            filterItem.getIcon().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN);
+        }
         return true;
     }
 
@@ -245,16 +254,16 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            MainActivity.this.startActivity(intent);
+            Intent intent = new Intent(FilterTaskActivity.this, SettingsActivity.class);
+            FilterTaskActivity.this.startActivity(intent);
             return true;
         } else if (id == R.id.action_checklist) {
-            Intent intent = new Intent(MainActivity.this, CompletedTaskActivity.class);
-            MainActivity.this.startActivity(intent);
+            Intent intent = new Intent(FilterTaskActivity.this, CompletedTaskActivity.class);
+            FilterTaskActivity.this.startActivity(intent);
             return true;
         } else if (id == R.id.action_filter) {
-            Intent intent = new Intent(MainActivity.this, FilterTaskActivity.class);
-            MainActivity.this.startActivity(intent);
+            Intent intent = new Intent(FilterTaskActivity.this, MainActivity.class);
+            FilterTaskActivity.this.startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -268,8 +277,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     private void scrollToDate(long dateInMillis) {
         LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
         if (layoutManager != null) {
-            for (int i = 0; i < taskAdapter.getItemCount(); i++) {
-                Object item = taskAdapter.getItemAtPosition(i);
+            for (int i = 0; i < filterTaskAdapter.getItemCount(); i++) {
+                Object item = filterTaskAdapter.getItemAtPosition(i);
                 if (item instanceof Long && (Long) item == dateInMillis) {
                     layoutManager.scrollToPositionWithOffset(i, 0);
                     break;
