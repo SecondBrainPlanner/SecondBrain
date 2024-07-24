@@ -32,4 +32,6 @@
     <string name="reminder">Erinnerung</string>
     <string name="name_or_date_is_empty">Name ist leer</string>
     <string name="task_from">"Aufgabe vom "</string>
+    <string name="no_reminder_set">keine Erinnerung gesetzt</string>
+    <string name="reminder_deleted">Erinnerung gelöscht</string>
 </resources>

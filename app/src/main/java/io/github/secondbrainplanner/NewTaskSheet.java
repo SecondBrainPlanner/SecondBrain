@@ -95,7 +95,14 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
                 }
             }
         });
-        binding.resetReminderButton.setOnClickListener(v -> binding.newTaskReminder.setText(""));
+        binding.resetReminderButton.setOnClickListener(v -> {
+            if (binding.newTaskReminder.getText().toString().isEmpty()) {
+                Toast.makeText(v.getContext(), R.string.no_reminder_set, Toast.LENGTH_SHORT).show();
+            } else {
+                binding.newTaskReminder.setText("");
+                Toast.makeText(v.getContext(), R.string.reminder_deleted, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

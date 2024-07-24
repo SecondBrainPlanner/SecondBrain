@@ -32,4 +32,6 @@
     <string name="reminder">reminder</string>
     <string name="name_or_date_is_empty">Name is empty</string>
     <string name="task_from">"Task from "</string>
+    <string name="no_reminder_set">no reminder set</string>
+    <string name="reminder_deleted">reminder deleted</string>
 </resources>
