@@ -37,14 +37,11 @@ import java.util.Locale;
 
 import io.github.secondbrainplanner.databinding.ActivityFilterTaskBinding;
 
-public class FilterTaskActivity extends AppCompatActivity implements FilterTaskAdapter.onDateClickListener {
+public class FilterTaskActivity extends AppCompatActivity {
 
     private ActivityFilterTaskBinding binding;
     private TaskViewModel taskViewModel;
     private FilterTaskAdapter filterTaskAdapter;
-    private TextView textViewMon, textViewTue, textViewWed, textViewThu, textViewFri, textViewSat, textViewSun;
-    private TextView textViewMonNum, textViewTueNum, textViewWedNum, textViewThuNum, textViewFriNum, textViewSatNum, textViewSunNum;
-    private TextView monthAndYear;
     private String currentDate;
 
     @Override
@@ -61,31 +58,13 @@ public class FilterTaskActivity extends AppCompatActivity implements FilterTaskA
         binding = ActivityFilterTaskBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        monthAndYear = findViewById(R.id.monthAndYear);
-
-        textViewMon = findViewById(R.id.textViewMon);
-        textViewTue = findViewById(R.id.textViewTue);
-        textViewWed = findViewById(R.id.textViewWed);
-        textViewThu = findViewById(R.id.textViewThu);
-        textViewFri = findViewById(R.id.textViewFri);
-        textViewSat = findViewById(R.id.textViewSat);
-        textViewSun = findViewById(R.id.textViewSun);
-
-        textViewMonNum = findViewById(R.id.textViewMonNum);
-        textViewTueNum = findViewById(R.id.textViewTueNum);
-        textViewWedNum = findViewById(R.id.textViewWedNum);
-        textViewThuNum = findViewById(R.id.textViewThuNum);
-        textViewFriNum = findViewById(R.id.textViewFriNum);
-        textViewSatNum = findViewById(R.id.textViewSatNum);
-        textViewSunNum = findViewById(R.id.textViewSunNum);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
 
-        filterTaskAdapter = new FilterTaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerView, this);
+        filterTaskAdapter = new FilterTaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerView);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(filterTaskAdapter);
 
@@ -97,9 +76,6 @@ public class FilterTaskActivity extends AppCompatActivity implements FilterTaskA
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                updateMonthAndYear();
-                updateDateNumbers();
-                updateHighlightedWeekDay();
             }
         });
 
@@ -109,11 +85,6 @@ public class FilterTaskActivity extends AppCompatActivity implements FilterTaskA
             return WindowInsetsCompat.CONSUMED;
         });
 
-        SimpleDateFormat monthDateFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
-        String currentMonthAndYear = monthDateFormat.format(Calendar.getInstance().getTime());
-        monthAndYear.setText(currentMonthAndYear);
-
-        resetWeekDayHighlights();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -121,112 +92,6 @@ public class FilterTaskActivity extends AppCompatActivity implements FilterTaskA
             }
         }
 
-    }
-    private void updateMonthAndYear() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
-        if (layoutManager != null) {
-            int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-            Object item = filterTaskAdapter.getItemAtPosition(firstVisiblePosition);
-            if (item instanceof Long) {
-                long dateInMillis = (Long) item;
-                Calendar calendar = CalendarUtils.getGermanCalendar();
-                calendar.setTimeInMillis(dateInMillis);
-                SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
-                String monthAndYearString = monthAndYearFormat.format(calendar.getTime());
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-                currentDate = dateFormat.format(calendar.getTime());
-                monthAndYear.setText(monthAndYearString);
-            }
-        }
-    }
-
-    private void updateHighlightedWeekDay() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
-        if (layoutManager != null) {
-            int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-            Object item = filterTaskAdapter.getItemAtPosition(firstVisiblePosition);
-            if (item instanceof Long) {
-                long dateInMillis = (Long) item;
-                Calendar calendar = CalendarUtils.getGermanCalendar();
-                calendar.setTimeInMillis(dateInMillis);
-                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-                highlightWeekDay(dayOfWeek);
-            }
-        }
-    }
-
-    private void highlightWeekDay(int dayOfWeek) {
-        resetWeekDayHighlights();
-        int topBarHighlightingColor = ContextCompat.getColor(this, R.color.topBarHighlightingColor);
-        switch (dayOfWeek) {
-            case Calendar.MONDAY:
-                textViewMon.setBackgroundColor(topBarHighlightingColor);
-                textViewMonNum.setBackgroundColor(topBarHighlightingColor);
-                break;
-            case Calendar.TUESDAY:
-                textViewTue.setBackgroundColor(topBarHighlightingColor);
-                textViewTueNum.setBackgroundColor(topBarHighlightingColor);
-                break;
-            case Calendar.WEDNESDAY:
-                textViewWed.setBackgroundColor(topBarHighlightingColor);
-                textViewWedNum.setBackgroundColor(topBarHighlightingColor);
-                break;
-            case Calendar.THURSDAY:
-                textViewThu.setBackgroundColor(topBarHighlightingColor);
-                textViewThuNum.setBackgroundColor(topBarHighlightingColor);
-                break;
-            case Calendar.FRIDAY:
-                textViewFri.setBackgroundColor(topBarHighlightingColor);
-                textViewFriNum.setBackgroundColor(topBarHighlightingColor);
-                break;
-            case Calendar.SATURDAY:
-                textViewSat.setBackgroundColor(topBarHighlightingColor);
-                textViewSatNum.setBackgroundColor(topBarHighlightingColor);
-                break;
-            case Calendar.SUNDAY:
-                textViewSun.setBackgroundColor(topBarHighlightingColor);
-                textViewSunNum.setBackgroundColor(topBarHighlightingColor);
-                break;
-        }
-    }
-
-    private void resetWeekDayHighlights() {
-        textViewMon.setBackgroundColor(Color.TRANSPARENT);
-        textViewTue.setBackgroundColor(Color.TRANSPARENT);
-        textViewWed.setBackgroundColor(Color.TRANSPARENT);
-        textViewThu.setBackgroundColor(Color.TRANSPARENT);
-        textViewFri.setBackgroundColor(Color.TRANSPARENT);
-        textViewSat.setBackgroundColor(Color.TRANSPARENT);
-        textViewSun.setBackgroundColor(Color.TRANSPARENT);
-
-        textViewMonNum.setBackgroundColor(Color.TRANSPARENT);
-        textViewTueNum.setBackgroundColor(Color.TRANSPARENT);
-        textViewWedNum.setBackgroundColor(Color.TRANSPARENT);
-        textViewThuNum.setBackgroundColor(Color.TRANSPARENT);
-        textViewFriNum.setBackgroundColor(Color.TRANSPARENT);
-        textViewSatNum.setBackgroundColor(Color.TRANSPARENT);
-        textViewSunNum.setBackgroundColor(Color.TRANSPARENT);
-    }
-
-    private void updateDateNumbers() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
-        if (layoutManager != null) {
-            int firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
-            Object item = filterTaskAdapter.getItemAtPosition(firstVisiblePosition);
-            if (item instanceof Long) {
-                long dateInMillis = (Long) item;
-                Calendar calendar = CalendarUtils.getGermanCalendar();
-                calendar.setTimeInMillis(dateInMillis);
-
-                textViewMonNum.setText(getDayOfMonth(calendar, Calendar.MONDAY));
-                textViewTueNum.setText(getDayOfMonth(calendar, Calendar.TUESDAY));
-                textViewWedNum.setText(getDayOfMonth(calendar, Calendar.WEDNESDAY));
-                textViewThuNum.setText(getDayOfMonth(calendar, Calendar.THURSDAY));
-                textViewFriNum.setText(getDayOfMonth(calendar, Calendar.FRIDAY));
-                textViewSatNum.setText(getDayOfMonth(calendar, Calendar.SATURDAY));
-                textViewSunNum.setText(getDayOfMonth(calendar, Calendar.SUNDAY));
-            }
-        }
     }
 
     private String getDayOfMonth(Calendar calendar, int dayOfWeek) {
@@ -269,21 +134,4 @@ public class FilterTaskActivity extends AppCompatActivity implements FilterTaskA
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onDateClick(long dateInMillis) {
-        scrollToDate(dateInMillis);
-    }
-
-    private void scrollToDate(long dateInMillis) {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recyclerView.getLayoutManager();
-        if (layoutManager != null) {
-            for (int i = 0; i < filterTaskAdapter.getItemCount(); i++) {
-                Object item = filterTaskAdapter.getItemAtPosition(i);
-                if (item instanceof Long && (Long) item == dateInMillis) {
-                    layoutManager.scrollToPositionWithOffset(i, 0);
-                    break;
-                }
-            }
-        }
-    }
 }

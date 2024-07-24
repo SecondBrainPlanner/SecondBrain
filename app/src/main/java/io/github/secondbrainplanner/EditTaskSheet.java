@@ -47,8 +47,8 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MainActivity activity = (MainActivity) requireActivity();
-        taskViewModel = new ViewModelProvider(activity).get(TaskViewModel.class);
+
+        taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         binding.editTaskAddButton.setOnClickListener(v -> saveAction());
         binding.editTaskDate.setOnClickListener(v -> showDatePicker(edittask.getDue_date()));
         binding.editTaskDate.setFocusable(false);

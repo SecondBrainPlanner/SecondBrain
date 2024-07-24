@@ -47,8 +47,8 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MainActivity activity = (MainActivity) requireActivity();
-        taskViewModel = new ViewModelProvider(activity).get(TaskViewModel.class);
+
+        taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
         binding.newTaskAddButton.setOnClickListener(v -> saveAction());
         binding.newTaskDate.setOnClickListener(v -> showDatePicker());
         binding.newTaskDate.setFocusable(false);

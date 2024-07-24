@@ -34,17 +34,15 @@ public class FilterTaskAdapter extends RecyclerView.Adapter<FilterTaskAdapter.Vi
     private TaskViewModel taskViewModel;
     private FragmentManager fragmentManager;
     private RecyclerView recyclerView;
-    private onDateClickListener onDateClickListener;
     private Context context;
     private Handler handler;
     private Runnable updateRunnable;
 
-    public FilterTaskAdapter(Context context, TaskViewModel taskViewModel, FragmentManager fragmentManager, RecyclerView recyclerView, onDateClickListener onDateClickListener) {
+    public FilterTaskAdapter(Context context, TaskViewModel taskViewModel, FragmentManager fragmentManager, RecyclerView recyclerView) {
         this.itemList = new ArrayList<>();
         this.taskViewModel = taskViewModel;
         this.fragmentManager = fragmentManager;
         this.recyclerView = recyclerView;
-        this.onDateClickListener = onDateClickListener;
         this.context = context;
 
         handler = new Handler(Looper.getMainLooper());
@@ -72,13 +70,13 @@ public class FilterTaskAdapter extends RecyclerView.Adapter<FilterTaskAdapter.Vi
             Date date = new Date(dateInMillis);
             holder.dateTextView.setText(headerFormat.format(date));
             holder.dateTextView.setVisibility(View.VISIBLE);
+            holder.dateTextView.setClickable(true);
             holder.nameTextView.setVisibility(View.GONE);
             holder.descriptionTextView.setVisibility(View.GONE);
             holder.completedCheckBoxView.setVisibility(View.GONE);
             holder.timeTextView.setVisibility(View.GONE);
 
             holder.dateTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
-            holder.dateTextView.setOnClickListener(v -> onDateClickListener.onDateClick(dateInMillis));
         } else {
             Task task = (Task) itemList.get(position);
             holder.nameTextView.setText(task.getTitle());
@@ -256,7 +254,4 @@ public class FilterTaskAdapter extends RecyclerView.Adapter<FilterTaskAdapter.Vi
         }
     }
 
-    public interface onDateClickListener {
-        void onDateClick(long dateInMillis);
-    }
 }
