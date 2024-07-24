@@ -145,7 +145,7 @@ public class EditTaskSheet extends BottomSheetDialogFragment {
         String description = binding.editTaskDescription.getText().toString();
         String due_date_str = binding.editTaskDate.getText().toString();
         String reminder_str = binding.editTaskReminder.getText().toString();
-        if (!title.isEmpty() && !description.isEmpty() && !due_date_str.isEmpty()) {
+        if (!title.isEmpty() && !due_date_str.isEmpty()) {
             long created_at = edittask.getCreated_at();
             long due_date = parseDate(due_date_str);
             if (!reminder_str.isEmpty()) {

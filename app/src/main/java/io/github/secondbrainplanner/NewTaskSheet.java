@@ -137,7 +137,7 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
         String description = binding.newTaskDescription.getText().toString();
         String due_date_str = binding.newTaskDate.getText().toString();
         String reminder_str = binding.newTaskReminder.getText().toString();
-        if (!title.isEmpty() && !description.isEmpty() && !due_date_str.isEmpty()) {
+        if (!title.isEmpty() && !due_date_str.isEmpty()) {
             long created_at = System.currentTimeMillis();
             long due_date = parseDate(due_date_str);
             if (!reminder_str.isEmpty()) {
