@@ -49,7 +49,7 @@ public class TaskViewModel extends ViewModel {
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
 
-        if (reminder) {
+        if (reminder && task.getDue_date() > System.currentTimeMillis()) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(task.getDue_date());
             AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
@@ -84,7 +84,7 @@ public class TaskViewModel extends ViewModel {
         _items.setValue(generateDateList(currentTaskList));
 
         AlarmHelper.cancelAlarm(application.getApplicationContext(), oldtask.getId());
-        if (reminder) {
+        if (reminder && task.getDue_date() > System.currentTimeMillis()) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(task.getDue_date());
             AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
@@ -122,9 +122,13 @@ public class TaskViewModel extends ViewModel {
         updateDateRangeIfNeeded(currentTaskList);
         _items.setValue(generateDateList(currentTaskList));
 
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(task.getDue_date());
-        AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
+        boolean reminder = !(calendar.get(Calendar.HOUR_OF_DAY) == 0 && calendar.get(Calendar.MINUTE) == 0 && calendar.get(Calendar.SECOND) == 0 && calendar.get(Calendar.MILLISECOND) == 0);
+        if (reminder && task.getDue_date() > System.currentTimeMillis()) {
+            AlarmHelper.setAlarm(application.getApplicationContext(), calendar, task.getTitle(), task.getDescription(), task.getId());
+        }
     }
     private void updateDateRangeIfNeeded(List<Task> taskList) {
         long minDate = System.currentTimeMillis();

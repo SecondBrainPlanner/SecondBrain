@@ -42,8 +42,8 @@ public class CompletedTaskActivity extends AppCompatActivity {
             todayCalendar.set(Calendar.SECOND, 0);
             todayCalendar.set(Calendar.MILLISECOND, 0);
 
-            if (due_date < todayCalendar.getTimeInMillis()){
-                due_date = System.currentTimeMillis();
+            while (due_date < todayCalendar.getTimeInMillis()){
+                due_date = due_date + 86400000L;
             }
 
             int completed = 0;
