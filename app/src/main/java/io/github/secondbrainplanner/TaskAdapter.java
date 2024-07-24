@@ -36,6 +36,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private RecyclerView recyclerView;
     private onDateClickListener onDateClickListener;
     private Context context;
+    private Handler handler;
+    private Runnable updateRunnable;
 
     public TaskAdapter(Context context, TaskViewModel taskViewModel, FragmentManager fragmentManager, RecyclerView recyclerView, onDateClickListener onDateClickListener) {
         this.itemList = new ArrayList<>();
@@ -44,6 +46,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         this.recyclerView = recyclerView;
         this.onDateClickListener = onDateClickListener;
         this.context = context;
+
+        handler = new Handler(Looper.getMainLooper());
+        updateRunnable = new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+                handler.postDelayed(this, 60000);
+            }
+        };
+        handler.post(updateRunnable);
     }
 
     @NonNull
@@ -63,6 +75,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.nameTextView.setVisibility(View.GONE);
             holder.descriptionTextView.setVisibility(View.GONE);
             holder.completedCheckBoxView.setVisibility(View.GONE);
+            holder.timeTextView.setVisibility(View.GONE);
 
             boolean hasTasks = false;
             for (int i = position + 1; i < itemList.size(); i++) {
@@ -92,6 +105,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.descriptionTextView.setVisibility(View.VISIBLE);
             holder.completedCheckBoxView.setVisibility(View.VISIBLE);
 
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            holder.timeTextView.setText(timeFormat.format(new Date(task.getDue_date())));
+
             Calendar todayCalendar = Calendar.getInstance();
             todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
             todayCalendar.set(Calendar.MINUTE, 0);
@@ -99,12 +115,30 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             todayCalendar.set(Calendar.MILLISECOND, 0);
             long todayMillis = todayCalendar.getTimeInMillis();
 
-            if (task.getDue_date() < todayCalendar.getTimeInMillis()) {
+            if (task.getDue_date() < todayMillis) {
                 holder.nameTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
                 holder.descriptionTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
             } else {
                 holder.nameTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
                 holder.descriptionTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
+            }
+
+            Calendar taskDueDateCalendar = Calendar.getInstance();
+            taskDueDateCalendar.setTimeInMillis(task.getDue_date());
+
+            if (taskDueDateCalendar.get(Calendar.HOUR_OF_DAY) == 0 &&
+                    taskDueDateCalendar.get(Calendar.MINUTE) == 0 &&
+                    taskDueDateCalendar.get(Calendar.SECOND) == 0 &&
+                    taskDueDateCalendar.get(Calendar.MILLISECOND) == 0) {
+                holder.timeTextView.setVisibility(View.GONE);
+            } else {
+                holder.timeTextView.setVisibility(View.VISIBLE);
+            }
+
+            if (task.getDue_date() < System.currentTimeMillis()) {
+                holder.timeTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
+            } else {
+                holder.timeTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.teal_200));
             }
 
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -199,6 +233,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         TextView dateTextView;
         TextView nameTextView;
         TextView descriptionTextView;
+        TextView timeTextView;
         CheckBox completedCheckBoxView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -206,6 +241,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             dateTextView = itemView.findViewById(R.id.dateTextView);
             nameTextView = itemView.findViewById(R.id.textViewTaskName);
             descriptionTextView = itemView.findViewById(R.id.textViewTaskDescription);
+            timeTextView = itemView.findViewById(R.id.textViewTime);
             completedCheckBoxView = itemView.findViewById(R.id.checkBoxCompleted);
         }
     }
