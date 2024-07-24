@@ -18,6 +18,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -52,7 +56,11 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
         binding.newTaskReminder.setFocusable(false);
         binding.newTaskReminder.setClickable(true);
 
-        binding.newTaskDate.setText(currentDate);
+        if (currentDate != null) {
+            binding.newTaskDate.setText(currentDate);
+        } else {
+            binding.newTaskDate.setText(convertToDate(System.currentTimeMillis()));
+        }
 
         binding.newTaskName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -188,6 +196,13 @@ public class NewTaskSheet extends BottomSheetDialogFragment {
             e.printStackTrace();
             return -1;
         }
+    }
+
+    private String convertToDate(long date) {
+        Instant instant = Instant.ofEpochMilli(date);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return dateTime.format(formatter);
     }
 
 }
