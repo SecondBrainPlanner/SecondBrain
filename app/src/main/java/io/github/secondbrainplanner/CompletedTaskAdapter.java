@@ -47,7 +47,7 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
         Task task = completedTasks.get(position);
         holder.nameTextView.setText(task.getTitle());
         holder.descriptionTextView.setText(task.getDescription());
-        holder.completedDateTextView.setText(context.getString(R.string.completed_at) + convertToDate(task.getCompleted_at()));
+        holder.completedDateTextView.setText(context.getString(R.string.task_from) + convertToDayFormat(task.getDue_date()) + " " + context.getString(R.string.completed_at) + convertToDate(task.getCompleted_at()));
         holder.completedCheckBoxView.setChecked(task.getCompleted() != 0);
 
         holder.completedCheckBoxView.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -91,6 +91,13 @@ public class CompletedTaskAdapter extends RecyclerView.Adapter<CompletedTaskAdap
         Instant instant = Instant.ofEpochMilli(date);
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy | HH:mm");
+        return dateTime.format(formatter);
+    }
+
+    private String convertToDayFormat(long date) {
+        Instant instant = Instant.ofEpochMilli(date);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return dateTime.format(formatter);
     }
 
