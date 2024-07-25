@@ -34,4 +34,5 @@
     <string name="task_from">"Task from "</string>
     <string name="no_reminder_set">no reminder set</string>
     <string name="reminder_deleted">reminder deleted</string>
+    <string name="upcoming">Upcoming</string>
 </resources>
