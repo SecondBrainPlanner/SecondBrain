@@ -1,6 +1,7 @@
 package io.github.secondbrainplanner;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
@@ -92,6 +93,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 holder.dateTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
             } else {
                 holder.dateTextView.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.grey));
+            }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(dateInMillis);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+                holder.dateTextView.setTypeface(null, Typeface.BOLD);
+            } else {
+                holder.dateTextView.setTypeface(null, Typeface.ITALIC);
             }
 
             holder.dateTextView.setOnClickListener(v -> onDateClickListener.onDateClick(dateInMillis));
