@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     private TextView monthAndYear;
     private String currentDate;
     private SharedPreferences sharedPreferences;
-    private boolean filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             }
         }
 
-        filter = sharedPreferences.getBoolean("task_filter", false);
+        boolean filter = sharedPreferences.getBoolean("task_filter", false);
         if (filter) {
             activateFilter();
         } else {
@@ -255,6 +254,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        boolean filter = sharedPreferences.getBoolean("task_filter", false);
         if (filter) {
             MenuItem filterItem = menu.findItem(R.id.action_filter);
             if (filterItem != null && filterItem.getIcon() != null) {
