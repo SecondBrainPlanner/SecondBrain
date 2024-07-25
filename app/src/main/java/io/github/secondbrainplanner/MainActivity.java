@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     private TextView monthAndYear;
     private String currentDate;
     private SharedPreferences sharedPreferences;
+    private boolean filter_active;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                updateMonthAndYear();
+                if (!filter_active) {
+                    updateMonthAndYear();
+                }
                 updateDateNumbers();
                 updateHighlightedWeekDay();
             }
@@ -314,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     }
 
     private void activateFilter() {
+        filter_active = true;
         Toolbar toolbar = findViewById(R.id.toolbar);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -326,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     }
 
     private void deactivateFilter() {
+        filter_active = false;
         Toolbar toolbar = findViewById(R.id.toolbar);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
