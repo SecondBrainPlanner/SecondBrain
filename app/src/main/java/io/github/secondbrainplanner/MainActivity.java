@@ -1,13 +1,17 @@
 package io.github.secondbrainplanner;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
@@ -38,10 +42,13 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     private ActivityMainBinding binding;
     private TaskViewModel taskViewModel;
     private TaskAdapter taskAdapter;
+    private FilterTaskAdapter filterTaskAdapter;
     private TextView textViewMon, textViewTue, textViewWed, textViewThu, textViewFri, textViewSat, textViewSun;
     private TextView textViewMonNum, textViewTueNum, textViewWedNum, textViewThuNum, textViewFriNum, textViewSatNum, textViewSunNum;
     private TextView monthAndYear;
     private String currentDate;
+    private SharedPreferences sharedPreferences;
+    private boolean filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +88,21 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         TaskViewModelFactory factory = new TaskViewModelFactory(getApplication());
         taskViewModel = new ViewModelProvider(this, factory).get(TaskViewModel.class);
 
+        sharedPreferences = getSharedPreferences("filter", Context.MODE_PRIVATE);
+
         taskAdapter = new TaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerView, this);
+        filterTaskAdapter = new FilterTaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerView);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(taskAdapter);
+
+        filter = sharedPreferences.getBoolean("task_filter", false);
+        if (filter) {
+            activateFilter();
+        } else {
+            deactivateFilter();
+        }
 
         taskViewModel.items.observe(this, items -> taskAdapter.setItems(items));
+        taskViewModel.items.observe(this, items -> filterTaskAdapter.setItems(items));
 
         binding.newTaskButton.setOnClickListener(view -> new NewTaskSheet(currentDate).show(getSupportFragmentManager(), "newTaskTag"));
 
@@ -238,6 +255,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        if (filter) {
+            MenuItem filterItem = menu.findItem(R.id.action_filter);
+            if (filterItem != null && filterItem.getIcon() != null) {
+                filterItem.getIcon().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN);
+            }
+        }
         return true;
     }
 
@@ -251,6 +274,21 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         } else if (id == R.id.action_checklist) {
             Intent intent = new Intent(MainActivity.this, CompletedTaskActivity.class);
             MainActivity.this.startActivity(intent);
+            return true;
+        } else if (id == R.id.action_filter) {
+            boolean filter = sharedPreferences.getBoolean("task_filter", false);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (filter) {
+                editor.putBoolean("task_filter", false);
+                editor.apply();
+                deactivateFilter();
+                item.getIcon().setColorFilter(Color.parseColor("#e8eaed"), PorterDuff.Mode.SRC_IN);
+            } else {
+                editor.putBoolean("task_filter", true);
+                editor.apply();
+                activateFilter();
+                item.getIcon().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN);
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -273,4 +311,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             }
         }
     }
+
+    private void activateFilter() {
+        binding.recyclerView.setAdapter(filterTaskAdapter);
+        binding.weekDaysGrid.setVisibility(View.GONE);
+    }
+
+    private void deactivateFilter() {
+        binding.recyclerView.setAdapter(taskAdapter);
+        binding.weekDaysGrid.setVisibility(View.VISIBLE);
+    }
+
 }
