@@ -9,11 +9,14 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -327,6 +330,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         binding.weekDaysGrid.setVisibility(View.GONE);
         binding.monthAndYear.setText(monthAndYearString);
         toolbar.setTitle(R.string.overview);
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (binding.recyclerView.getLayoutManager().getItemCount() == 0){
+                    Toast.makeText(getApplicationContext(), R.string.no_reminder_set, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, 1000);
     }
 
     private void deactivateFilter() {
