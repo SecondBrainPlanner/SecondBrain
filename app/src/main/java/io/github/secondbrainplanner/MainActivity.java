@@ -94,13 +94,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
         filterTaskAdapter = new FilterTaskAdapter(getApplicationContext(), taskViewModel, getSupportFragmentManager(), binding.recyclerView);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        filter = sharedPreferences.getBoolean("task_filter", false);
-        if (filter) {
-            activateFilter();
-        } else {
-            deactivateFilter();
-        }
-
         taskViewModel.items.observe(this, items -> taskAdapter.setItems(items));
         taskViewModel.items.observe(this, items -> filterTaskAdapter.setItems(items));
 
@@ -132,6 +125,13 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[] {Manifest.permission.POST_NOTIFICATIONS}, 1);
             }
+        }
+
+        filter = sharedPreferences.getBoolean("task_filter", false);
+        if (filter) {
+            activateFilter();
+        } else {
+            deactivateFilter();
         }
     }
     private void updateMonthAndYear() {
@@ -315,16 +315,26 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
 
     private void activateFilter() {
         Toolbar toolbar = findViewById(R.id.toolbar);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("dd. MMMM yyyy", Locale.getDefault());
+        String monthAndYearString = monthAndYearFormat.format(calendar.getTime());
         binding.recyclerView.setAdapter(filterTaskAdapter);
         binding.weekDaysGrid.setVisibility(View.GONE);
-        toolbar.setTitle("Übersicht");
+        binding.monthAndYear.setText(monthAndYearString);
+        toolbar.setTitle(R.string.overview);
     }
 
     private void deactivateFilter() {
         Toolbar toolbar = findViewById(R.id.toolbar);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        SimpleDateFormat monthAndYearFormat = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+        String monthAndYearString = monthAndYearFormat.format(calendar.getTime());
         binding.recyclerView.setAdapter(taskAdapter);
         binding.weekDaysGrid.setVisibility(View.VISIBLE);
-        toolbar.setTitle("Bevorstehend");
+        binding.monthAndYear.setText(monthAndYearString);
+        toolbar.setTitle(R.string.upcoming);
     }
 
 }

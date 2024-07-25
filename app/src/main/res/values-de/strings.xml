@@ -34,4 +34,5 @@
     <string name="task_from">"Aufgabe vom "</string>
     <string name="no_reminder_set">keine Erinnerung gesetzt</string>
     <string name="reminder_deleted">Erinnerung gelöscht</string>
+    <string name="upcoming">Bevorstehend</string>
 </resources>
