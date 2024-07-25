@@ -288,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
                 editor.apply();
                 activateFilter();
                 item.getIcon().setColorFilter(ContextCompat.getColor(this, R.color.red), PorterDuff.Mode.SRC_IN);
+
             }
             return true;
         }
@@ -313,13 +314,17 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.onDat
     }
 
     private void activateFilter() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
         binding.recyclerView.setAdapter(filterTaskAdapter);
         binding.weekDaysGrid.setVisibility(View.GONE);
+        toolbar.setTitle("Übersicht");
     }
 
     private void deactivateFilter() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
         binding.recyclerView.setAdapter(taskAdapter);
         binding.weekDaysGrid.setVisibility(View.VISIBLE);
+        toolbar.setTitle("Bevorstehend");
     }
 
 }
