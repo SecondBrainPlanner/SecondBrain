@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -150,7 +151,7 @@ public class TaskViewModel extends ViewModel {
         List<Object> itemList = new ArrayList<>();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2024,1,1); // max oldest task date is 1.1.2024
+        calendar.set(Year.now().getValue(),1,1); // max oldest task date is 1.1. in same year
 
         Calendar todayCalendar = Calendar.getInstance();    // set calender to start 0:00
         todayCalendar.set(Calendar.HOUR_OF_DAY, 0);
