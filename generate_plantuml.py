@@ -166,12 +166,12 @@ def write_uml_file(classes, associations):
         file.write('@startuml\n')
         file.write('left to right direction\n')
         file.write('skinparam classAttributeIconSize 0\n')
-        file.write('skinparam nodesep 30\n')  
-        file.write('skinparam ranksep 50\n')  
-        file.write('skinparam dpi 150\n') 
-        file.write('skinparam defaultFontSize 10\n')  
+        file.write('skinparam nodesep 20\n')  # Weiter reduzierter Abstand zwischen den Knoten
+        file.write('skinparam ranksep 30\n')  # Weiter reduzierter Abstand zwischen den Reihen
+        file.write('skinparam dpi 100\n')  # Weiter reduzierte DPI für noch kompakteres Layout
+        file.write('skinparam defaultFontSize 8\n')  # Noch kleinere Schriftgröße für noch kompakteres Diagramm
         file.write('skinparam class {\n')
-        file.write('  Width 150\n')  
+        file.write('  Width 100\n')  # Weiter reduzierte Mindestbreite für Klassen
         file.write('}\n')
         
         for cls, details in classes.items():
